@@ -1,6 +1,6 @@
 {
   "name": "poolz-helper",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A single source of truth of helper contracts used by Poolz.",
   "main": "truffle-config.js",
   "directories": {
