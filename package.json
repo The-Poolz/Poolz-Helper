@@ -1,8 +1,13 @@
 {
   "name": "poolz-helper",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A single source of truth of helper contracts used by Poolz.",
   "main": "truffle-config.js",
+  "homepage": "https://github.com/The-Poolz/Poolz-Helper",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/The-Poolz/Poolz-Helper.git"
+  },
   "directories": {
     "test": "test"
   },
