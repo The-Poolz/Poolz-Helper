@@ -7,5 +7,5 @@ interface IWhiteList {
     function Check(address _Subject, uint256 _Id) external view returns(uint);
     function Register(address _Subject,uint256 _Id,uint256 _Amount) external;
     function IsNeedRegister(uint256 _Id) external view returns(bool);
-    function LastRoundRegister(address _Subject,uint256 _Id,uint256 _Amount) external;
+    function LastRoundRegister(address _Subject,uint256 _Id) external;
 }
