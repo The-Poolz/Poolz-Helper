@@ -58,4 +58,13 @@ contract ERC20Helper  {
             "recive wrong amount of tokens"
         );
     }
+
+    function ApproveAllowanceERC20(
+        address _Token,
+        address _Subject,
+        uint256 _Amount
+    ) internal {
+        require(_Amount > 0);
+        ERC20(_Token).approve(_Subject, _Amount);
+    }
 }
