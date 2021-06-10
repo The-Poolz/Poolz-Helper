@@ -1,6 +1,6 @@
 {
   "name": "poolz-helper",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A single source of truth of helper contracts used by Poolz.",
   "main": "truffle-config.js",
   "homepage": "https://github.com/The-Poolz/Poolz-Helper",
