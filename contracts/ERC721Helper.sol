@@ -36,7 +36,7 @@ contract ERC721Helper {
         address _Token,
         uint256 _TokenId,
         address _From
-    ) internal TestAllownce(_Token, _TokenId, _From) {
+    ) internal TestNFTAllownce(_Token, _TokenId, _From) {
         IERC721(_Token).transferFrom(_From, address(this), _TokenId);
         emit TransferOut(_Token, _TokenId, _From);
         assert(IERC721(_Token).ownerOf(_TokenId) == address(this));
