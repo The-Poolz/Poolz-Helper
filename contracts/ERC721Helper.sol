@@ -9,7 +9,7 @@ contract ERC721Helper {
     event TransferOut(address Token, uint256 TokenId, address To);
     event TransferIn(address Token, uint256 TokenId, address From);
 
-    modifier TestAllownce(
+    modifier TestNFTAllownce(
         address _token,
         uint256 _tokenId,
         address _owner
