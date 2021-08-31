@@ -22,7 +22,7 @@ contract ERC721Helper {
         _;
     }
 
-    function TransferTokenOut(
+    function TransferNFTOut(
         address _Token,
         uint256 _TokenId,
         address _To
@@ -32,7 +32,7 @@ contract ERC721Helper {
         assert(IERC721(_Token).ownerOf(_TokenId) == _To);
     }
 
-    function TransferTokenIn(
+    function TransferNFTIn(
         address _Token,
         uint256 _TokenId,
         address _From
@@ -42,7 +42,7 @@ contract ERC721Helper {
         assert(IERC721(_Token).ownerOf(_TokenId) == address(this));
     }
 
-    function SetApproveForAll(
+    function SetApproveForAllNFT(
         address _Token,
         address _To,
         bool _Approve
