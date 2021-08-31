@@ -29,6 +29,7 @@ contract ERC721Helper {
     ) internal {
         IERC721(_Token).transferFrom(address(this), _To, _TokenId);
         emit TransferOut(_Token, _TokenId, _To);
+        assert(IERC721(_Token).ownerOf(_TokenId) == _To);
     }
 
     function TransferTokenIn(
