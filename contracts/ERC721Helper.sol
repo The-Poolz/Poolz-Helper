@@ -41,4 +41,12 @@ contract ERC721Helper {
         emit TransferOut(_Token, _TokenId, _From);
         assert(IERC721(_Token).ownerOf(_TokenId) == address(this));
     }
+
+    function SetApproveForAll(
+        address _Token,
+        address _To,
+        bool _Approve
+    ) internal {
+        IERC721(_Token).setApprovalForAll(_To, _Approve);
+    }
 }
