@@ -1,3 +1,5 @@
+[![Build Status](https://app.travis-ci.com/The-Poolz/Poolz-Helper.svg?branch=master)](https://app.travis-ci.com/The-Poolz/Poolz-Helper)
+
 [![CodeFactor](https://www.codefactor.io/repository/github/the-poolz/poolz-helper/badge)](https://www.codefactor.io/repository/github/the-poolz/poolz-helper)
 
 # Poolz-Helper
