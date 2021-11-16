@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/the-poolz/poolz-helper/badge)](https://www.codefactor.io/repository/github/the-poolz/poolz-helper)
+
 # Poolz-Helper
 This package acts as a single source of truth for helper contracts used by the [Poolz](http://poolz.finance/).
 
