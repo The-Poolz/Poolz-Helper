@@ -18,8 +18,8 @@
  *
  */
 
- const HDWalletProvider = require("@truffle/hdwallet-provider");
- const { mnemonic, rinkebyInfuraEndpoint } = require("./secret");
+const HDWalletProvider = require("@truffle/hdwallet-provider");
+const { mnemonic, rinkebyInfuraEndpoint } = require("./secret");
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
@@ -43,9 +43,9 @@ module.exports = {
     // options below to some value.
     //
     development: {
-     host: "127.0.0.1",     // Localhost (default: none)
-     port: 8545,            // Standard Ethereum port (default: none)
-     network_id: "*",       // Any network (default: none)
+      host: "127.0.0.1",     // Localhost (default: none)
+      port: 8545,            // Standard Ethereum port (default: none)
+      network_id: "*",       // Any network (default: none)
     },
     rinkeby: {
       provider: () => {
@@ -93,8 +93,8 @@ module.exports = {
       settings: {
         evmVersion: "byzantium",
         optimizer: { enabled: true, runs: 200 },
-      },     
-      version: "^0.6.0",
+      },
+      version: "pragma",
       docker: false,
       parser: "solcjs",
     }

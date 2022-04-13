@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.0;
 
-import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract ERC20Helper  {
+contract ERC20Helper {
     event TransferOut(uint256 Amount, address To, address Token);
     event TransferIn(uint256 Amount, address From, address Token);
     modifier TestAllownce(
@@ -29,8 +28,7 @@ contract ERC20Helper  {
         emit TransferOut(_Amount, _Reciver, _Token);
         ERC20(_Token).transfer(_Reciver, _Amount);
         require(
-            (SafeMath.add(CheckBalance(_Token, address(this)), _Amount)) == OldBalance
-                ,
+            (CheckBalance(_Token, address(this)) + _Amount) == OldBalance,
             "recive wrong amount of tokens"
         );
     }
@@ -53,8 +51,7 @@ contract ERC20Helper  {
         ERC20(_Token).transferFrom(_Subject, address(this), _Amount);
         emit TransferIn(_Amount, _Subject, _Token);
         require(
-            (SafeMath.add(OldBalance, _Amount)) ==
-                CheckBalance(_Token, address(this)),
+            (OldBalance + _Amount) == CheckBalance(_Token, address(this)),
             "recive wrong amount of tokens"
         );
     }
