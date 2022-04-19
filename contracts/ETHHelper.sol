@@ -1,15 +1,18 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.0;
 
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "openzeppelin-solidity/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ETHHelper is Ownable {
-    constructor() public {
+    constructor() {
         IsPayble = false;
     }
 
-    modifier ReceivETH(uint256 msgValue, address msgSender, uint256 _MinETHInvest) {
+    modifier ReceivETH(
+        uint256 msgValue,
+        address msgSender,
+        uint256 _MinETHInvest
+    ) {
         require(msgValue >= _MinETHInvest, "Send ETH to invest");
         emit TransferInETH(msgValue, msgSender);
         _;
@@ -24,19 +27,18 @@ contract ETHHelper is Ownable {
     event TransferInETH(uint256 Amount, address From);
 
     bool public IsPayble;
- 
+
     function SwitchIsPayble() public onlyOwner {
         IsPayble = !IsPayble;
     }
 
-    function TransferETH(address payable _Reciver, uint256 _ammount) internal {
-        emit TransferOutETH(_ammount, _Reciver);
+    function TransferETH(address payable _Reciver, uint256 _amount) internal {
+        emit TransferOutETH(_amount, _Reciver);
         uint256 beforeBalance = address(_Reciver).balance;
-        _Reciver.transfer(_ammount);
+        _Reciver.transfer(_amount);
         require(
-            SafeMath.add(beforeBalance, _ammount) == address(_Reciver).balance,
+            (beforeBalance + _amount) == address(_Reciver).balance,
             "The transfer did not complite"
         );
     }
- 
 }

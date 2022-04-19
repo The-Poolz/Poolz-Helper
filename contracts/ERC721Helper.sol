@@ -1,9 +1,8 @@
-
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.0;
 
-import "openzeppelin-solidity/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract ERC721Helper {
     event TransferOut(address Token, uint256 TokenId, address To);
@@ -16,7 +15,7 @@ contract ERC721Helper {
     ) {
         require(
             IERC721(_token).isApprovedForAll(_owner, address(this)) ||
-            IERC721(_token).getApproved(_tokenId) == address(this),
+                IERC721(_token).getApproved(_tokenId) == address(this),
             "No Allowance"
         );
         _;

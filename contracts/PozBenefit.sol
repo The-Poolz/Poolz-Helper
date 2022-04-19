@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.0;
 
 import "./GovManager.sol";
 
 contract PozBenefit is GovManager {
-    constructor() public {
+    constructor() {
         PozFee = 15; // *10000
         PozTimer = 1000; // *10000
-    
-       // POZ_Address = address(0x0);
-       // POZBenefit_Address = address(0x0);
+
+        // POZ_Address = address(0x0);
+        // POZBenefit_Address = address(0x0);
     }
 
     uint256 public PozFee; // the fee for the first part of the pool
     uint256 public PozTimer; //the timer for the first part fo the pool
-    
+
     modifier PercentCheckOk(uint256 _percent) {
         if (_percent < 10000) _;
         else revert("Not in range");
@@ -32,6 +32,4 @@ contract PozBenefit is GovManager {
     {
         PozTimer = _pozTimer;
     }
-
-    
 }
