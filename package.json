@@ -1,6 +1,6 @@
 {
   "name": "poolz-helper-v2",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A single source of truth of helper contracts used by Poolz.",
   "main": "truffle-config.js",
   "homepage": "https://github.com/The-Poolz/Poolz-Helper",
@@ -42,7 +42,7 @@
     "node-fetch": ">=2.6.1",
     "openzeppelin-solidity": "^3.4.1",
     "sol-merger": "^3.1.0",
-    "solidity-coverage": "^0.7.11",
+    "solidity-coverage": "^0.7.21",
     "truffle-plugin-verify": "^0.5.7"
   }
 }

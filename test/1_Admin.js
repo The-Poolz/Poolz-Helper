@@ -41,11 +41,11 @@ contract('Admin Tests', accounts => {
     })
     it('should fail to set POZ timer when invalid value provided', async () => {
         const timer = 100000
-        truffleAssert.reverts(pozInstance.SetPozTimer(timer, {from: fromAddress}), 'Not in range')
+        await truffleAssert.reverts(pozInstance.SetPozTimer(timer, {from: fromAddress}), 'Not in range')
     })
     it('should fail to set POZ timer when called without invalid address', async () => {
         const timer = 1000
-        truffleAssert.reverts(pozInstance.SetPozTimer(timer, {from: accounts[1]}), 'Authorization Error')
+        await truffleAssert.reverts(pozInstance.SetPozTimer(timer, {from: accounts[1]}), 'Authorization Error')
     })
     
 })
