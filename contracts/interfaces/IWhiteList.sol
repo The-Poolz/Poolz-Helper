@@ -9,6 +9,4 @@ interface IWhiteList {
     function LastRoundRegister(address _Subject,uint256 _Id) external;
     function CreateManualWhiteList(uint256 _ChangeUntil, address _Contract) external payable returns(uint256 Id);
     function ChangeCreator(uint256 _Id, address _NewCreator) external;
-    function AddAddress(uint256 _Id, address[] calldata _Users, uint256[] calldata _Amount) external;
-    function RemoveAddress(uint256 _Id, address[] calldata _Users) external;
 }
