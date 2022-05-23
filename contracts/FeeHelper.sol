@@ -9,41 +9,52 @@ contract FeeHelper is ETHHelper, ERC20Helper, GovManager {
     uint256 public Fee;
     uint256 public Reserve;
     address public FeeToken;
-    //mapping(address => uint256) FeeMap;
 
-    modifier isZeroReserve() {
-        require(Reserve > 0, "Fee amount is zero");
+    modifier isZeroReserve(uint256 _reserve) {
+        require(_reserve > 0, "Fee amount is zero");
         _;
     }
 
-    function PayFee() public payable {
-        if (Fee > 0) {
-            if (FeeToken == address(0)) {
-                require(msg.value >= Fee, "Not Enough Fee Provided"); // check if tx.origin has paid the required fee amount
-            } else {
-                TransferInToken(FeeToken, tx.origin, Fee); // transfer ERC20 tokens to contract
-            }
-        }
-        msg.value > Fee ? Reserve += msg.value : Reserve += Fee; // solves the problem if msg.value more than fee amount
+    function PayFee() public {
+        PayFee(FeeToken, Fee);
+        Reserve += Fee;
     }
 
-    function WithdrawFee(address payable _to) public isZeroReserve {
-        if (FeeToken == address(0)) {
-            _to.transfer(Reserve);
-        } else {
-            TransferToken(FeeToken, _to, Reserve);
-        }
+    function WithdrawFee(address payable _to) public onlyOwnerOrGov {
+        WithdrawFee(FeeToken, _to, Reserve);
         Reserve = 0;
     }
 
-    function setFee(uint256 _fee) public {
-        Fee = _fee;
+    function PayFee(address _token, uint256 _fee) internal {
+        if (_fee == 0) return;
+        if (_token == address(0)) {
+            require(msg.value >= _fee, "Not Enough Fee Provided");
+        } else {
+            TransferInToken(_token, msg.sender, _fee);
+        }
     }
 
-    function setToken(address _token) public {
-        if (Reserve > 0) {
-            WithdrawFee(payable(tx.origin)); // If tries to set a new token without withrowing the old one
+    function SetFee(address _token, uint256 _amount) external onlyOwnerOrGov {
+        SetFeeToken(_token);
+        Fee = _amount;
+    }
+
+    function SetFeeToken(address _token) public onlyOwnerOrGov {
+        if (Reserve > 0 && _token != FeeToken) {
+            WithdrawFee(payable(msg.sender)); // If the admin tries to set a new token without withrowing the old one
         }
-        FeeToken = _token;
+        FeeToken = _token; // set address(0) to use ETH/BNB as main coin
+    }
+
+    function WithdrawFee(
+        address _token,
+        address payable _to,
+        uint256 _reserve
+    ) internal isZeroReserve(_reserve) {
+        if (_token == address(0)) {
+            _to.transfer(_reserve);
+        } else {
+            TransferToken(_token, _to, _reserve);
+        }
     }
 }
