@@ -10,7 +10,7 @@ contract FeeHelper is ETHHelper, ERC20Helper, GovManager {
     uint256 public Reserve;
     address public FeeToken;
 
-    modifier isZeroReserve(uint256 _reserve) {
+    modifier IsGotReserve(uint256 _reserve) {
         require(_reserve > 0, "Fee amount is zero");
         _;
     }
@@ -36,11 +36,17 @@ contract FeeHelper is ETHHelper, ERC20Helper, GovManager {
 
     function SetFee(address _token, uint256 _amount) external onlyOwnerOrGov {
         SetFeeToken(_token);
+        SetFeeAmount(_amount);
+    }
+
+    function SetFeeAmount(uint256 _amount) public onlyOwnerOrGov {
+        require(Fee != _amount, "Can't swap to same fee value");
         Fee = _amount;
     }
 
     function SetFeeToken(address _token) public onlyOwnerOrGov {
-        if (Reserve > 0 && _token != FeeToken) {
+        require(FeeToken != _token, "Can't swap to same token");
+        if (Reserve > 0) {
             WithdrawFee(payable(msg.sender)); // If the admin tries to set a new token without withrowing the old one
         }
         FeeToken = _token; // set address(0) to use ETH/BNB as main coin
@@ -50,7 +56,7 @@ contract FeeHelper is ETHHelper, ERC20Helper, GovManager {
         address _token,
         address payable _to,
         uint256 _reserve
-    ) internal isZeroReserve(_reserve) {
+    ) internal IsGotReserve(_reserve) {
         if (_token == address(0)) {
             _to.transfer(_reserve);
         } else {

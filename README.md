@@ -7,7 +7,7 @@ This package acts as a single source of truth for helper contracts used by the [
 
 ## Install
 ```
-npm i poolz-helper
+npm i poolz-helper-v2
 ```
 ## Reference
 ### 1. ERC20Helper
