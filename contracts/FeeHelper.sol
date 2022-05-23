@@ -15,7 +15,7 @@ contract FeeHelper is ETHHelper, ERC20Helper, GovManager {
         _;
     }
 
-    function PayFee() public {
+    function PayFee() public payable {
         PayFee(FeeToken, Fee);
         Reserve += Fee;
     }
