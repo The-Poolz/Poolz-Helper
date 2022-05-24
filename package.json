@@ -17,6 +17,7 @@
   "author": "Ashwin Arora",
   "license": "MIT",
   "dependencies": {
+    "@openzeppelin/test-helpers": "^0.5.15",
     "@truffle/compile-common": "^0.3.10",
     "@truffle/hdwallet-provider": "^1.1.0",
     "babel-polyfill": "^6.26.0",
