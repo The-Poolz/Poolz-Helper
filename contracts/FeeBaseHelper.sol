@@ -35,6 +35,7 @@ contract FeeBaseHelper is ERC20Helper {
     }
 
     function WithdrawFee(address payable _to, uint256 _amount) public {
+        require(_amount > 0, "Fee amount is zero");
         if (FeeToken == address(0)) {
             _to.transfer(_amount);
         } else {
