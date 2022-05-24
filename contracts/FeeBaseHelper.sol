@@ -10,15 +10,15 @@ contract FeeBaseHelper is ERC20Helper {
 
     event TransferInETH(uint256 Amount, address From);
 
-    function PayFee() public payable {
-        if (Fee == 0) return;
+    function PayFee(uint256 _fee) public payable {
+        if (_fee == 0) return;
         if (FeeToken == address(0)) {
-            require(msg.value >= Fee, "Not Enough Fee Provided");
+            require(msg.value >= _fee, "Not Enough Fee Provided");
             emit TransferInETH(msg.value, tx.origin);
         } else {
-            TransferInToken(FeeToken, tx.origin, Fee);
+            TransferInToken(FeeToken, tx.origin, _fee);
         }
-        Reserve += Fee;
+        Reserve += _fee;
     }
 
     function SetFeeAmount(uint256 _amount) public {

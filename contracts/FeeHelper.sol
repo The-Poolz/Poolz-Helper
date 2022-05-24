@@ -13,7 +13,7 @@ contract FeeHelper is GovManager {
     }
 
     function PayFee() public payable {
-        BaseFee.PayFee{value: msg.value}();
+        BaseFee.PayFee{value: msg.value}(BaseFee.Fee());
     }
 
     function WithdrawFee(address payable _to) public onlyOwnerOrGov {
