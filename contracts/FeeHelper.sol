@@ -1,66 +1,27 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./ERC20Helper.sol";
-import "./ETHHelper.sol";
 import "./GovManager.sol";
+import "./FeeBaseHelper.sol";
+import "./ERC20Helper.sol";
 
-contract FeeHelper is ETHHelper, ERC20Helper, GovManager {
-    uint256 public Fee;
-    uint256 public Reserve;
-    address public FeeToken;
+contract FeeHelper is GovManager {
+    FeeBaseHelper public BaseFee;
 
-    modifier IsGotReserve(uint256 _reserve) {
-        require(_reserve > 0, "Fee amount is zero");
-        _;
+    constructor() {
+        BaseFee = new FeeBaseHelper();
     }
 
     function PayFee() public payable {
-        PayFee(FeeToken, Fee);
-        Reserve += Fee;
+        BaseFee.PayFee{value: msg.value}();
     }
 
     function WithdrawFee(address payable _to) public onlyOwnerOrGov {
-        WithdrawFee(FeeToken, _to, Reserve);
-        Reserve = 0;
+        BaseFee.WithdrawFee(_to, BaseFee.Reserve());
     }
 
-    function PayFee(address _token, uint256 _fee) internal {
-        if (_fee == 0) return;
-        if (_token == address(0)) {
-            require(msg.value >= _fee, "Not Enough Fee Provided");
-        } else {
-            TransferInToken(_token, msg.sender, _fee);
-        }
-    }
-
-    function SetFee(address _token, uint256 _amount) external onlyOwnerOrGov {
-        SetFeeToken(_token);
-        SetFeeAmount(_amount);
-    }
-
-    function SetFeeAmount(uint256 _amount) public onlyOwnerOrGov {
-        require(Fee != _amount, "Can't swap to same fee value");
-        Fee = _amount;
-    }
-
-    function SetFeeToken(address _token) public onlyOwnerOrGov {
-        require(FeeToken != _token, "Can't swap to same token");
-        if (Reserve > 0) {
-            WithdrawFee(payable(msg.sender)); // If the admin tries to set a new token without withrowing the old one
-        }
-        FeeToken = _token; // set address(0) to use ETH/BNB as main coin
-    }
-
-    function WithdrawFee(
-        address _token,
-        address payable _to,
-        uint256 _reserve
-    ) internal IsGotReserve(_reserve) {
-        if (_token == address(0)) {
-            _to.transfer(_reserve);
-        } else {
-            TransferToken(_token, _to, _reserve);
-        }
+    function SetFee(address _token, uint256 _amount) public onlyOwnerOrGov {
+        BaseFee.SetFeeToken(_token);
+        BaseFee.SetFeeAmount(_amount);
     }
 }
