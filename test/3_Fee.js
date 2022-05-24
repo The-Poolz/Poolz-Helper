@@ -18,7 +18,8 @@ contract("Fee Helper Test", accounts => {
 
     describe('test ERC20 token', async () => {
         it('should set fee token', async () => {
-            await feeHelper.SetFee(token.address, fee)
+            await feeHelper.SetFee(fee)
+            await feeHelper.SetToken(token.address)
             const feeToken = await feeBase.FeeToken()
             const actualFee = await feeBase.Fee()
             assert.equal(actualFee, fee, 'invalid fee')
@@ -44,7 +45,7 @@ contract("Fee Helper Test", accounts => {
 
     describe('test ETH coin', async () => {
         it('should set fee token', async () => {
-            await feeBase.SetFeeToken(constants.ZERO_ADDRESS)
+            await feeHelper.SetToken(constants.ZERO_ADDRESS)
             const feeToken = await feeBase.FeeToken()
             const actualFee = await feeBase.Fee()
             assert.equal(actualFee, fee, 'invalid fee')

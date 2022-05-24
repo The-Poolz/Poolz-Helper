@@ -20,8 +20,11 @@ contract FeeHelper is GovManager {
         BaseFee.WithdrawFee(_to, BaseFee.Reserve());
     }
 
-    function SetFee(address _token, uint256 _amount) public onlyOwnerOrGov {
-        BaseFee.SetFeeToken(_token);
+    function SetFee(uint256 _amount) public onlyOwnerOrGov {
         BaseFee.SetFeeAmount(_amount);
+    }
+
+    function SetToken(address _token) public onlyOwnerOrGov {
+        BaseFee.SetFeeToken(_token);
     }
 }
