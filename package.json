@@ -1,6 +1,6 @@
 {
   "name": "poolz-helper-v2",
-  "version": "2.0.1",
+  "version": "2.0.4",
   "description": "A single source of truth of helper contracts used by Poolz.",
   "main": "truffle-config.js",
   "homepage": "https://github.com/The-Poolz/Poolz-Helper",
@@ -17,6 +17,7 @@
   "author": "Ashwin Arora",
   "license": "MIT",
   "dependencies": {
+    "@openzeppelin/test-helpers": "^0.5.15",
     "@truffle/compile-common": "^0.3.10",
     "@truffle/hdwallet-provider": "^1.1.0",
     "babel-polyfill": "^6.26.0",
