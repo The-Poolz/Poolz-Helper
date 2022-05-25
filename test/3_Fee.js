@@ -3,9 +3,10 @@ const FeeHelper = artifacts.require("FeeHelper")
 const FeeBaseHelper = artifacts.require("FeeBaseHelper")
 const { assert } = require("chai")
 const constants = require("@openzeppelin/test-helpers/src/constants")
+const BigNumber = require("bignumber.js")
 
 contract("Fee Helper Test", accounts => {
-    const contractOwner = accounts[0], fee = '100000'
+    const contractOwner = accounts[0], fee = '100000', payer = accounts[1]
     let token
     let feeHelper, feeBase
 
@@ -14,6 +15,29 @@ contract("Fee Helper Test", accounts => {
         const feeBaseAddr = (await feeHelper.BaseFee()).toString()
         feeBase = await FeeBaseHelper.at(feeBaseAddr)
         token = await ERC20.new('TEST token', 'TEST')
+    })
+
+    it('zero fee', async () => {
+        const oldBal = new BigNumber(await web3.eth.getBalance(payer))
+        const txnReceipt = await feeHelper.PayFee({ from: payer })
+        const rcpt = await web3.eth.getTransaction(txnReceipt.tx)
+        const gasPrice = rcpt.gasPrice
+        const actualBal = await web3.eth.getBalance(payer)
+        const gas = new BigNumber(txnReceipt.receipt.gasUsed * gasPrice)
+        const expectedBal = oldBal.minus(gas)
+        assert.equal(actualBal, expectedBal, "invalid balance amount")
+    })
+
+    it('change the token when there is already a reserve', async () => {
+        await feeHelper.SetFee(fee / 2)
+        await feeHelper.SetToken(token.address)
+        await token.transfer(payer, fee / 2)
+        await token.approve(feeBase.address, fee / 2, { from: payer })
+        const oldBal = await token.balanceOf(contractOwner)
+        await feeHelper.PayFee({ from: payer })
+        await feeHelper.SetToken(constants.ZERO_ADDRESS)
+        const actualBal = await token.balanceOf(contractOwner)
+        assert.equal(parseInt(oldBal) + parseInt(fee / 2), actualBal, 'invalid token balance')
     })
 
     describe('test ERC20 token', async () => {
@@ -27,7 +51,6 @@ contract("Fee Helper Test", accounts => {
         })
 
         it('should pay', async () => {
-            const payer = accounts[1]
             await token.transfer(payer, fee)
             await token.approve(feeBase.address, fee, { from: payer })
             const oldBal = await token.balanceOf(feeBase.address)
@@ -53,7 +76,6 @@ contract("Fee Helper Test", accounts => {
         })
 
         it('should pay', async () => {
-            const payer = accounts[1]
             const oldBal = await web3.eth.getBalance(feeBase.address)
             await feeHelper.PayFee({ from: payer, value: fee })
             const actualBal = await web3.eth.getBalance(feeBase.address)

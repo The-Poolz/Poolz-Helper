@@ -17,7 +17,7 @@ contract FeeHelper is GovManager {
     }
 
     function WithdrawFee(address payable _to) public onlyOwnerOrGov {
-        BaseFee.WithdrawFee(_to, BaseFee.Reserve());
+        BaseFee.WithdrawFee(_to);
     }
 
     function SetFee(uint256 _amount) public onlyOwnerOrGov {
