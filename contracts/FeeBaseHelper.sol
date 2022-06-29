@@ -6,6 +6,8 @@ import "./GovManager.sol";
 
 contract FeeBaseHelper is ERC20Helper, GovManager {
     event TransferInETH(uint256 Amount, address From);
+    event NewFeeAmount(uint256 NewFeeAmount, uint256 OldFeeAmount);
+    event NewFeeToken(address NewFeeToken, address OldFeeToken);
 
     uint256 public Fee;
     address public FeeToken;
@@ -24,6 +26,7 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
 
     function SetFeeAmount(uint256 _amount) public onlyOwnerOrGov {
         require(Fee != _amount, "Can't swap to same fee value");
+        emit NewFeeAmount(_amount, Fee);
         Fee = _amount;
     }
 
@@ -32,6 +35,7 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
         if (Reserve > 0) {
             WithdrawFee(payable(tx.origin)); // If the admin tries to set a new token without withrowing the old one
         }
+        emit NewFeeToken(_token, FeeToken);
         FeeToken = _token; // set address(0) to use ETH/BNB as main coin
     }
 
