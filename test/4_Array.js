@@ -28,4 +28,10 @@ contract("array library test", accounts => {
         result = await arrayContract.isInArray(adrrArr, accounts[4])
         assert.equal(result, false)
     })
+
+    it('should return the same array', async () => {
+        const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        const slicedArr = await arrayContract.KeepNElementsInArray(arr, arr.length)
+        assert.equal(arr.toString(), slicedArr.toString())
+    })
 })
