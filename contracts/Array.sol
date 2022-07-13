@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
 library Array {
     /// @dev returns a new slice of the array
     function KeepNElementsInArray(uint256[] memory _arr, uint256 _n)
-        public
+        internal
         pure
         returns (uint256[] memory newArray)
     {
@@ -21,7 +21,7 @@ library Array {
 
     /// @return sum of the array elements
     function getArraySum(uint256[] calldata _array)
-        public
+        internal
         pure
         returns (uint256)
     {
@@ -34,7 +34,7 @@ library Array {
 
     /// @return true if the element exists in the array
     function isInArray(address[] memory _arr, address _elem)
-        public
+        internal
         pure
         returns (bool)
     {
