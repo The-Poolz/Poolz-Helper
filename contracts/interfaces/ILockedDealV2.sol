@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-interface ILockedDeal {
+interface ILockedDealV2 {
     function CreateNewPool(
         address _Token,
-        uint64 _FinishTime,
+        uint256 _StartTime,
+        uint256 _FinishTime,
         uint256 _StartAmount,
         address _Owner
     ) external returns (uint256);
