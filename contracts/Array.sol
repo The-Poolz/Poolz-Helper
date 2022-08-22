@@ -19,6 +19,20 @@ library Array {
         return newArray;
     }
 
+    function KeepNElementsInArray(address[] memory _arr, uint256 _n)
+        internal
+        pure
+        returns (address[] memory newArray)
+    {
+        if (_arr.length == _n) return _arr;
+        require(_arr.length > _n, "can't cut more then got");
+        newArray = new address[](_n);
+        for (uint256 i = 0; i < _n; i++) {
+            newArray[i] = _arr[i];
+        }
+        return newArray;
+    }
+
     /// @return sum of the array elements
     function getArraySum(uint256[] calldata _array)
         internal
