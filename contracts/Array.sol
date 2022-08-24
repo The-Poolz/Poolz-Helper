@@ -33,6 +33,23 @@ library Array {
         return newArray;
     }
 
+    /// @return true if the array is ordered
+    function isArrayOrdered(uint256[] memory _arr)
+        internal
+        pure
+        returns (bool)
+    {
+        require(_arr.length > 0, "array should be greater than zero");
+        uint256 temp = _arr[0];
+        for (uint256 i = 1; i < _arr.length; i++) {
+            if (temp > _arr[i]) {
+                return false;
+            }
+            temp = _arr[i];
+        }
+        return true;
+    }
+
     /// @return sum of the array elements
     function getArraySum(uint256[] calldata _array)
         internal
