@@ -36,10 +36,10 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
         FeeToken = _token; // set address(0) to use ETH/BNB as main coin
     }
 
-    function WithdrawFee(address _token, address payable _to) public onlyOwnerOrGov {
+    function WithdrawFee(address _token, address _to) public onlyOwnerOrGov {
         require(Reserve[_token] > 0, "Fee amount is zero");
         if (_token == address(0)) {
-            _to.transfer(Reserve[_token]);
+            payable(_to).transfer(Reserve[_token]);
         } else {
             TransferToken(_token, _to, Reserve[_token]);
         }
