@@ -44,7 +44,7 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
             TransferToken(
                 _token,
                 _to,
-                IERC20(FeeToken).balanceOf(address(this))
+                IERC20(_token).balanceOf(address(this))
             );
         }
     }
