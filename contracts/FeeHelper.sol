@@ -5,7 +5,7 @@ import "./GovManager.sol";
 import "./FeeBaseHelper.sol";
 
 // example to use FeeBaseHelper
-contract FeeHelper is GovManager {
+contract FeeHelper is GovManager, ERC20Helper {
     FeeBaseHelper public BaseFee;
 
     constructor() {
@@ -13,11 +13,15 @@ contract FeeHelper is GovManager {
     }
 
     function PayFee() public payable {
+        if (BaseFee.FeeToken() != address(0)) {
+            TransferInToken(BaseFee.FeeToken(), msg.sender, BaseFee.Fee());
+            IERC20(BaseFee.FeeToken()).approve(address(BaseFee), BaseFee.Fee());
+        }
         BaseFee.PayFee{value: msg.value}(BaseFee.Fee());
     }
 
     function WithdrawFee(address payable _to) public onlyOwnerOrGov {
-        BaseFee.WithdrawFee(_to);
+        BaseFee.WithdrawFee(BaseFee.FeeToken(), _to);
     }
 
     function SetFee(uint256 _amount) public onlyOwnerOrGov {

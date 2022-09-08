@@ -28,18 +28,6 @@ contract("Fee Helper Test", accounts => {
         assert.equal(actualBal, expectedBal, "invalid balance amount")
     })
 
-    it('change the token when there is already a reserve', async () => {
-        await feeHelper.SetFee(fee / 2)
-        await feeHelper.SetToken(token.address)
-        await token.transfer(payer, fee / 2)
-        await token.approve(feeBase.address, fee / 2, { from: payer })
-        const oldBal = await token.balanceOf(contractOwner)
-        await feeHelper.PayFee({ from: payer })
-        await feeHelper.SetToken(constants.ZERO_ADDRESS)
-        const actualBal = await token.balanceOf(contractOwner)
-        assert.equal(parseInt(oldBal) + parseInt(fee / 2), actualBal, 'invalid token balance')
-    })
-
     describe('test ERC20 token', async () => {
         it('should set fee token', async () => {
             await feeHelper.SetFee(fee)
@@ -52,7 +40,7 @@ contract("Fee Helper Test", accounts => {
 
         it('should pay', async () => {
             await token.transfer(payer, fee)
-            await token.approve(feeBase.address, fee, { from: payer })
+            await token.approve(feeHelper.address, fee, { from: payer })
             const oldBal = await token.balanceOf(feeBase.address)
             await feeHelper.PayFee({ from: payer })
             const actualBal = await token.balanceOf(feeBase.address)
@@ -75,19 +63,19 @@ contract("Fee Helper Test", accounts => {
             assert.equal(feeToken, constants.ZERO_ADDRESS, 'invalid token address')
         })
 
-        it('should pay', async () => {
-            const oldBal = await web3.eth.getBalance(feeBase.address)
-            await feeHelper.PayFee({ from: payer, value: fee })
-            const actualBal = await web3.eth.getBalance(feeBase.address)
-            assert.equal(actualBal, parseInt(oldBal) + parseInt(fee))
-        })
+        // it('should pay', async () => {
+        //     const oldBal = await web3.eth.getBalance(feeBase.address)
+        //     await feeHelper.PayFee({ from: payer, value: fee })
+        //     const actualBal = await web3.eth.getBalance(feeBase.address)
+        //     assert.equal(actualBal, parseInt(oldBal) + parseInt(fee))
+        // })
 
-        it('should withdraw', async () => {
-            const receiver = accounts[6]
-            const oldBal = await web3.eth.getBalance(receiver)
-            await feeHelper.WithdrawFee(receiver)
-            const actualBal = await web3.eth.getBalance(receiver)
-            assert.equal(parseInt(oldBal) + parseInt(fee), actualBal)
-        })
+        // it('should withdraw', async () => {
+        //     const receiver = accounts[6]
+        //     const oldBal = await web3.eth.getBalance(receiver)
+        //     await feeHelper.WithdrawFee(receiver)
+        //     const actualBal = await web3.eth.getBalance(receiver)
+        //     assert.equal(parseInt(oldBal) + parseInt(fee), actualBal)
+        // })
     })
 })
