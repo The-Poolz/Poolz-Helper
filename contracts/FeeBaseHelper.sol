@@ -11,6 +11,7 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
 
     uint256 public Fee;
     address public FeeToken;
+    mapping(address => uint256) public Reserve;
 
     function PayFee(uint256 _fee) public payable {
         if (_fee == 0) return;
@@ -20,6 +21,7 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
         } else {
             TransferInToken(FeeToken, msg.sender, _fee);
         }
+        Reserve[FeeToken] += _fee;
     }
 
     function SetFeeAmount(uint256 _amount) public onlyOwnerOrGov {
@@ -34,18 +36,13 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
         FeeToken = _token; // set address(0) to use ETH/BNB as main coin
     }
 
-    function WithdrawFee(address _token, address payable _to)
-        public
-        onlyOwnerOrGov
-    {
+    function WithdrawFee(address _token, address payable _to) public onlyOwnerOrGov {
+        require(Reserve[_token] > 0, "Fee amount is zero");
         if (_token == address(0)) {
-            _to.transfer(address(this).balance);
+            _to.transfer(Reserve[_token]);
         } else {
-            TransferToken(
-                _token,
-                _to,
-                IERC20(_token).balanceOf(address(this))
-            );
+            TransferToken(_token, _to, Reserve[_token]);
         }
+        Reserve[_token] = 0;
     }
 }
