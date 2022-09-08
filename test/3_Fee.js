@@ -63,19 +63,19 @@ contract("Fee Helper Test", accounts => {
             assert.equal(feeToken, constants.ZERO_ADDRESS, 'invalid token address')
         })
 
-        // it('should pay', async () => {
-        //     const oldBal = await web3.eth.getBalance(feeBase.address)
-        //     await feeHelper.PayFee({ from: payer, value: fee })
-        //     const actualBal = await web3.eth.getBalance(feeBase.address)
-        //     assert.equal(actualBal, parseInt(oldBal) + parseInt(fee))
-        // })
+        it('should pay', async () => {
+            const oldBal = await web3.eth.getBalance(feeBase.address)
+            await feeHelper.PayFee({ from: payer, value: fee })
+            const actualBal = await web3.eth.getBalance(feeBase.address)
+            assert.equal(actualBal, parseInt(oldBal) + parseInt(fee))
+        })
 
-        // it('should withdraw', async () => {
-        //     const receiver = accounts[6]
-        //     const oldBal = await web3.eth.getBalance(receiver)
-        //     await feeHelper.WithdrawFee(receiver)
-        //     const actualBal = await web3.eth.getBalance(receiver)
-        //     assert.equal(parseInt(oldBal) + parseInt(fee), actualBal)
-        // })
+        it('should withdraw', async () => {
+            const receiver = accounts[6]
+            const oldBal = await web3.eth.getBalance(receiver)
+            await feeHelper.WithdrawFee(receiver)
+            const actualBal = await web3.eth.getBalance(receiver)
+            assert.equal(parseInt(oldBal) + parseInt(fee), actualBal)
+        })
     })
 })
