@@ -11,17 +11,17 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
 
     uint256 public Fee;
     address public FeeToken;
-    uint256 public Reserve;
+    mapping(address => uint256) public Reserve;
 
     function PayFee(uint256 _fee) public payable {
         if (_fee == 0) return;
         if (FeeToken == address(0)) {
             require(msg.value >= _fee, "Not Enough Fee Provided");
-            emit TransferInETH(msg.value, tx.origin);
+            emit TransferInETH(msg.value, msg.sender);
         } else {
-            TransferInToken(FeeToken, tx.origin, _fee);
+            TransferInToken(FeeToken, msg.sender, _fee);
         }
-        Reserve += _fee;
+        Reserve[FeeToken] += _fee;
     }
 
     function SetFeeAmount(uint256 _amount) public onlyOwnerOrGov {
@@ -32,20 +32,17 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
 
     function SetFeeToken(address _token) public onlyOwnerOrGov {
         require(FeeToken != _token, "Can't swap to same token");
-        if (Reserve > 0) {
-            WithdrawFee(payable(tx.origin)); // If the admin tries to set a new token without withrowing the old one
-        }
         emit NewFeeToken(_token, FeeToken);
         FeeToken = _token; // set address(0) to use ETH/BNB as main coin
     }
 
-    function WithdrawFee(address payable _to) public onlyOwnerOrGov {
-        require(Reserve > 0, "Fee amount is zero");
-        if (FeeToken == address(0)) {
-            _to.transfer(Reserve);
+    function WithdrawFee(address _token, address _to) public onlyOwnerOrGov {
+        require(Reserve[_token] > 0, "Fee amount is zero");
+        if (_token == address(0)) {
+            payable(_to).transfer(Reserve[_token]);
         } else {
-            TransferToken(FeeToken, _to, Reserve);
+            TransferToken(_token, _to, Reserve[_token]);
         }
-        Reserve = 0;
+        Reserve[_token] = 0;
     }
 }
