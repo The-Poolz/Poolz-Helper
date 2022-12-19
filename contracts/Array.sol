@@ -51,7 +51,7 @@ library Array {
     }
 
     /// @return sum of the array elements
-    function getArraySum(uint256[] calldata _array)
+    function getArraySum(uint256[] memory _array)
         internal
         pure
         returns (uint256)
