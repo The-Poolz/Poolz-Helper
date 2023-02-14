@@ -74,4 +74,10 @@ library Array {
         }
         return false;
     }
+
+    function addIfNotExsist(address[] storage _arr, address _elem) internal {
+        if (!Array.isInArray(_arr, _elem)) {
+            _arr.push(_elem);
+        }
+    }
 }
