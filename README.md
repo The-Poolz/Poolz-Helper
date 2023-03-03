@@ -1,6 +1,8 @@
 [![Build Status](https://app.travis-ci.com/The-Poolz/Poolz-Helper.svg?branch=master)](https://app.travis-ci.com/The-Poolz/Poolz-Helper)
 [![codecov](https://codecov.io/gh/The-Poolz/Poolz-Helper/branch/master/graph/badge.svg?token=JIz6mduCuo)](https://codecov.io/gh/The-Poolz/Poolz-Helper)
 [![CodeFactor](https://www.codefactor.io/repository/github/the-poolz/poolz-helper/badge)](https://www.codefactor.io/repository/github/the-poolz/poolz-helper)
+[![npm version](https://img.shields.io/npm/v/poolz-helper-v2/latest.svg)](https://www.npmjs.com/package/poolz-helper-v2/v/latest)
+
 
 # Poolz-Helper
 This package acts as a single source of truth for helper contracts used by the [Poolz](http://poolz.finance/).
