@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-interface ILockedDeal {
+interface IDelayVault {
     function setLockedDealAddress(address _lockedDealAddress) external;
 
     function WithdrawFrom(
