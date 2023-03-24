@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 /// @title contains array utility functions
 library Array {
     /// @dev returns a new slice of the array
-    function KeepNElementsInArray(uint256[] memory _arr, uint256 _n)
+    function KeepNElementsInArray(uint256[] calldata _arr, uint256 _n)
         internal
         pure
         returns (uint256[] memory newArray)
@@ -19,7 +19,7 @@ library Array {
         return newArray;
     }
 
-    function KeepNElementsInArray(address[] memory _arr, uint256 _n)
+    function KeepNElementsInArray(address[] calldata _arr, uint256 _n)
         internal
         pure
         returns (address[] memory newArray)
@@ -34,7 +34,7 @@ library Array {
     }
 
     /// @return true if the array is ordered
-    function isArrayOrdered(uint256[] memory _arr)
+    function isArrayOrdered(uint256[] calldata _arr)
         internal
         pure
         returns (bool)
@@ -51,7 +51,7 @@ library Array {
     }
 
     /// @return sum of the array elements
-    function getArraySum(uint256[] memory _array)
+    function getArraySum(uint256[] calldata _array)
         internal
         pure
         returns (uint256)
