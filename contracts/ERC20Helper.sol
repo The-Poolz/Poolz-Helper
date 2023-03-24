@@ -24,21 +24,14 @@ contract ERC20Helper {
         address _Reciver,
         uint256 _Amount
     ) internal {
-        uint256 OldBalance = CheckBalance(_Token, address(this));
+        uint256 OldBalance = ERC20(_Token).balanceOf(address(this));
         emit TransferOut(_Amount, _Reciver, _Token);
         ERC20(_Token).transfer(_Reciver, _Amount);
         require(
-            (CheckBalance(_Token, address(this)) + _Amount) == OldBalance,
-            "ERC20Helper: sent incorrect amount"
+        (ERC20(_Token).balanceOf(address(this)) + _Amount) == OldBalance,
+            "ERC20Helper: sent incorrect amount"         
+            "recive wrong amount of tokens"
         );
-    }
-
-    function CheckBalance(address _Token, address _Subject)
-        internal
-        view
-        returns (uint256)
-    {
-        return ERC20(_Token).balanceOf(_Subject);
     }
 
     function TransferInToken(
@@ -47,11 +40,11 @@ contract ERC20Helper {
         uint256 _Amount
     ) internal TestAllownce(_Token, _Subject, _Amount) {
         require(_Amount > 0);
-        uint256 OldBalance = CheckBalance(_Token, address(this));
+        uint256 OldBalance = ERC20(_Token).balanceOf(address(this));
         ERC20(_Token).transferFrom(_Subject, address(this), _Amount);
         emit TransferIn(_Amount, _Subject, _Token);
         require(
-            (OldBalance + _Amount) == CheckBalance(_Token, address(this)),
+            (OldBalance + _Amount) == ERC20(_Token).balanceOf(address(this)),
             "ERC20Helper: Received Incorrect Amount"
         );
     }

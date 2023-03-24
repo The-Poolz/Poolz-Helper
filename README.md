@@ -38,7 +38,7 @@ onlyOwnerOrGov
 
 //function
 //sets the address of Gov contract
-setGovernerContract(address)
+setGovernorContract(address)
 ```
 ### 4. Token
 ERC20 Token used for Testing Purpose
