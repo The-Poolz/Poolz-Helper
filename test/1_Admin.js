@@ -1,6 +1,7 @@
 const GovManager = artifacts.require('GovManager')
 const EthHelper = artifacts.require('ETHHelper')
 const PozBenefit = artifacts.require('PozBenefit')
+const { ZERO_ADDRESS } = require('@openzeppelin/test-helpers/src/constants');
 const { assert } = require('chai');
 const truffleAssert = require('truffle-assertions');
 
@@ -15,9 +16,12 @@ contract('Admin Tests', accounts => {
 
     it('should set and get Gov contract address', async () => {
         const govAddress = accounts[9]
-        await govInstance.setGovernorContract(govAddress, {from: fromAddress})
+        const tx = await govInstance.setGovernorContract(govAddress, {from: fromAddress})
         const result = await govInstance.GovernorContract()
+        const event = tx.logs[0].args
         assert.equal(govAddress, result)
+        assert.equal(event.oldGovernor, ZERO_ADDRESS)
+        assert.equal(event.newGovernor, accounts[9])
     })
     it('should set and get is payable', async () => {
         const payable = await ethInstance.IsPayble()

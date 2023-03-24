@@ -5,6 +5,11 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract GovManager is Ownable {
+    event GovernorUpdated (
+        address indexed oldGovernor,
+        address indexed newGovernor
+    );
+
     address public GovernorContract;
 
     modifier onlyOwnerOrGov() {
@@ -16,7 +21,9 @@ contract GovManager is Ownable {
     }
 
     function setGovernorContract(address _address) external onlyOwnerOrGov {
+        address oldGov = GovernorContract;
         GovernorContract = _address;
+        emit GovernorUpdated(oldGov, GovernorContract);
     }
 
     constructor() {
