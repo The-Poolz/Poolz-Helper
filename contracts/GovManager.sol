@@ -5,21 +5,21 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract GovManager is Ownable {
-    address public GovernerContract;
+    address public GovernorContract;
 
     modifier onlyOwnerOrGov() {
         require(
-            msg.sender == owner() || msg.sender == GovernerContract,
+            msg.sender == owner() || msg.sender == GovernorContract,
             "Authorization Error"
         );
         _;
     }
 
-    function setGovernerContract(address _address) external onlyOwnerOrGov {
-        GovernerContract = _address;
+    function setGovernorContract(address _address) external onlyOwnerOrGov {
+        GovernorContract = _address;
     }
 
     constructor() {
-        GovernerContract = address(0);
+        GovernorContract = address(0);
     }
 }
