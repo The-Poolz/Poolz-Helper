@@ -15,8 +15,8 @@ contract('Admin Tests', accounts => {
 
     it('should set and get Gov contract address', async () => {
         const govAddress = accounts[9]
-        await govInstance.setGovernerContract(govAddress, {from: fromAddress})
-        const result = await govInstance.GovernerContract()
+        await govInstance.setGovernorContract(govAddress, {from: fromAddress})
+        const result = await govInstance.GovernorContract()
         assert.equal(govAddress, result)
     })
     it('should set and get is payable', async () => {
@@ -34,7 +34,7 @@ contract('Admin Tests', accounts => {
     it('should set and get is POZ timer when called from Gov Address', async () => {
         const timer = 9000
         const govAddress = accounts[9]
-        await pozInstance.setGovernerContract(govAddress, {from: fromAddress})
+        await pozInstance.setGovernorContract(govAddress, {from: fromAddress})
         await pozInstance.SetPozTimer(timer, {from: govAddress})
         const result = await pozInstance.PozTimer()
         assert.equal(timer, result)
