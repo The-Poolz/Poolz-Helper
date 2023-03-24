@@ -28,7 +28,7 @@ contract ERC20Helper {
         emit TransferOut(_Amount, _Reciver, _Token);
         ERC20(_Token).transfer(_Reciver, _Amount);
         require(
-        (ERC20(_Token).balanceOf(address(this)) + _Amount) == OldBalance,
+            (ERC20(_Token).balanceOf(address(this)) + _Amount) == OldBalance,
             "ERC20Helper: sent incorrect amount"         
             "recive wrong amount of tokens"
         );
