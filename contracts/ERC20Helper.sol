@@ -14,7 +14,7 @@ contract ERC20Helper {
     ) {
         require(
             ERC20(_token).allowance(_owner, address(this)) >= _amount,
-            "no allowance"
+            "ERC20Helper: no allowance"
         );
         _;
     }
@@ -29,7 +29,7 @@ contract ERC20Helper {
         ERC20(_Token).transfer(_Reciver, _Amount);
         require(
             (ERC20(_Token).balanceOf(address(this)) + _Amount) == OldBalance,
-            "recive wrong amount of tokens"
+            "ERC20Helper: sent incorrect amount"
         );
     }
 
@@ -44,7 +44,7 @@ contract ERC20Helper {
         emit TransferIn(_Amount, _Subject, _Token);
         require(
             (OldBalance + _Amount) == ERC20(_Token).balanceOf(address(this)),
-            "recive wrong amount of tokens"
+            "ERC20Helper: Received Incorrect Amount"
         );
     }
 
