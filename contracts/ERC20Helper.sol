@@ -30,7 +30,6 @@ contract ERC20Helper {
         require(
             (ERC20(_Token).balanceOf(address(this)) + _Amount) == OldBalance,
             "ERC20Helper: sent incorrect amount"         
-            "recive wrong amount of tokens"
         );
     }
 
