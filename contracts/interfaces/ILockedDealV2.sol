@@ -14,4 +14,25 @@ interface ILockedDealV2 {
     function WithdrawToken(uint256 _PoolId)
         external
         returns (uint256 withdrawnAmount);
+
+    function SplitPoolAmountFrom(
+        uint256 _LDpoolId,
+        uint256 _Amount,
+        address _Address
+    ) external returns(uint256 poolId);
+
+    function Allowance(
+        uint256 _poolId,
+        address _user
+    ) external view returns(uint256 amount);
+
+    function AllPoolz(uint256 _LDpoolId) external view returns (
+        uint256 StartTime,
+        uint256 CliffTime,
+        uint256 FinishTime,
+        uint256 StartAmount,
+        uint256 DebitedAmount,
+        address Owner,
+        address Token
+    );
 }
