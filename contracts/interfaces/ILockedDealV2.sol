@@ -11,9 +11,24 @@ interface ILockedDealV2 {
         address _Owner // Who the tokens belong to
     ) external payable;
 
-    function WithdrawToken(uint256 _PoolId)
-        external
-        returns (uint256 withdrawnAmount);
+    function CreatePoolsWrtTime(
+        address _Token,
+        uint256[] calldata _StartTime,
+        uint256[] calldata _CliffTime,
+        uint256[] calldata _FinishTime,
+        uint256[] calldata _StartAmount,
+        address[] calldata _Owner
+    ) external payable;
+
+    function Index() external returns (uint256);
+
+    function GetMyPoolsId(
+        address _UserAddress
+    ) external view returns (uint256[] memory);
+
+    function WithdrawToken(
+        uint256 _PoolId
+    ) external returns (uint256 withdrawnAmount);
 
     function SplitPoolAmountFrom(
         uint256 _LDpoolId,
