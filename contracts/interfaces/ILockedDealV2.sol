@@ -26,6 +26,11 @@ interface ILockedDealV2 {
         address _UserAddress
     ) external view returns (uint256[] memory);
 
+    function GetMyPoolsIdByToken(
+        address _UserAddress,
+        address[] memory _Tokens
+    ) external view returns (uint256[] memory);
+
     function WithdrawToken(
         uint256 _PoolId
     ) external returns (uint256 withdrawnAmount);
