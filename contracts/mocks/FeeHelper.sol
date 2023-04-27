@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./GovManager.sol";
-import "./FeeBaseHelper.sol";
+import "../GovManager.sol";
+import "../FeeBaseHelper.sol";
 
 // example to use FeeBaseHelper
 contract FeeHelper is GovManager, ERC20Helper {

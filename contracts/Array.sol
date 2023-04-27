@@ -13,7 +13,7 @@ library Array {
         if (_arr.length == _n) return _arr;
         require(_arr.length > _n, "can't cut more then got");
         newArray = new uint256[](_n);
-        for (uint256 i = 0; i < _n; i++) {
+        for (uint256 i = 0; i < _n; ++i) {
             newArray[i] = _arr[i];
         }
         return newArray;
@@ -27,7 +27,7 @@ library Array {
         if (_arr.length == _n) return _arr;
         require(_arr.length > _n, "can't cut more then got");
         newArray = new address[](_n);
-        for (uint256 i = 0; i < _n; i++) {
+        for (uint256 i = 0; i < _n; ++i) {
             newArray[i] = _arr[i];
         }
         return newArray;
@@ -41,7 +41,7 @@ library Array {
     {
         require(_arr.length > 0, "array should be greater than zero");
         uint256 temp = _arr[0];
-        for (uint256 i = 1; i < _arr.length; i++) {
+        for (uint256 i = 1; i < _arr.length; ++i) {
             if (temp > _arr[i]) {
                 return false;
             }
@@ -57,7 +57,7 @@ library Array {
         returns (uint256)
     {
         uint256 sum = 0;
-        for (uint256 i = 0; i < _array.length; i++) {
+        for (uint256 i = 0; i < _array.length; ++i) {
             sum = sum + _array[i];
         }
         return sum;
@@ -69,7 +69,7 @@ library Array {
         pure
         returns (bool)
     {
-        for (uint256 i = 0; i < _arr.length; i++) {
+        for (uint256 i = 0; i < _arr.length; ++i) {
             if (_arr[i] == _elem) return true;
         }
         return false;
