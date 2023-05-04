@@ -1,0 +1,38 @@
+const EthHelper = artifacts.require("ETHMock")
+const { assert } = require("chai")
+const truffleAssert = require("truffle-assertions")
+
+contract("ETH Helper tests", (accounts) => {
+    let ethHelper, contractBalance
+    const minETHInvest = "1000"
+    const owner = accounts[0]
+
+    before(async () => {
+        ethHelper = await EthHelper.new()
+    })
+
+    beforeEach(async () => {
+        await ethHelper.receiveETH(minETHInvest, { value: minETHInvest })
+    })
+
+    afterEach(async () => {
+        await ethHelper.transferETH(owner, minETHInvest)
+    })
+
+    it("should send eth to the contract", async () => {
+        contractBalance = await web3.eth.getBalance(ethHelper.address)
+        assert.equal(contractBalance.toString(), minETHInvest.toString())
+    })
+
+    it("should revert invalid amount eth", async () => {
+        await truffleAssert.reverts(
+            ethHelper.receiveETH(minETHInvest, { value: minETHInvest / 2 }),
+            "Send ETH to invest"
+        )
+    })
+
+    after(async () => {
+        contractBalance = await web3.eth.getBalance(ethHelper.address)
+        assert.equal(contractBalance.toString(), "0")
+    })
+})
