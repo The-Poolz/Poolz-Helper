@@ -8,7 +8,7 @@ contract ERC721Helper {
     event TransferOut(address Token, uint256 TokenId, address To);
     event TransferIn(address Token, uint256 TokenId, address From);
 
-    modifier TestNFTAllownce(
+    modifier TestNFTAllowance(
         address _token,
         uint256 _tokenId,
         address _owner
@@ -35,7 +35,7 @@ contract ERC721Helper {
         address _Token,
         uint256 _TokenId,
         address _From
-    ) internal TestNFTAllownce(_Token, _TokenId, _From) {
+    ) internal TestNFTAllowance(_Token, _TokenId, _From) {
         IERC721(_Token).transferFrom(_From, address(this), _TokenId);
         emit TransferOut(_Token, _TokenId, _From);
         assert(IERC721(_Token).ownerOf(_TokenId) == address(this));
