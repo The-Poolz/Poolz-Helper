@@ -21,7 +21,7 @@ contract("ETH Helper tests", (accounts) => {
 
     it("should send eth to the contract", async () => {
         contractBalance = await web3.eth.getBalance(ethHelper.address)
-        assert.equal(contractBalance.toString(), minETHInvest.toString())
+        assert.equal(minETHInvest.toString(), contractBalance.toString())
     })
 
     it("should revert invalid amount eth", async () => {
@@ -33,6 +33,6 @@ contract("ETH Helper tests", (accounts) => {
 
     after(async () => {
         contractBalance = await web3.eth.getBalance(ethHelper.address)
-        assert.equal(contractBalance.toString(), "0")
+        assert.equal("0", contractBalance.toString())
     })
 })

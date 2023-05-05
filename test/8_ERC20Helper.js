@@ -25,19 +25,19 @@ contract("ERC20 Helper tests", (accounts) => {
     it("should send tokens to contract", async () => {
         await erc20Helper.transferInToken(token.address, owner, amount)
         const balance = await token.balanceOf(erc20Helper.address)
-        assert.equal(balance.toString(), BigNumber.sum(contractBalance, amount).toString())
+        assert.equal(BigNumber.sum(contractBalance, amount).toString(), balance.toString())
     })
 
     it("should send tokens from contract", async () => {
         await erc20Helper.transferToken(token.address, owner, contractBalance)
         const balance = await token.balanceOf(erc20Helper.address)
-        assert.equal(balance.toString(), "0")
+        assert.equal("0", balance.toString())
     })
 
     it("should approve using tokens", async () => {
         await erc20Helper.approveAllowanceERC20(token.address, owner, contractBalance)
         const allowance = await token.allowance(erc20Helper.address, owner)
-        assert.equal(allowance.toString(), contractBalance.toString())
+        assert.equal(contractBalance.toString(), allowance.toString())
     })
 
     it("should revert invalid approved amount", async () => {
