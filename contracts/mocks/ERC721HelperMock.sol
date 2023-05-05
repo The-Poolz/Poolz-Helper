@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "../ERC721Helper.sol";
 
-contract ERC721Mock is ERC721Helper {
+contract ERC721HelperMock is ERC721Helper {
     function setApproveForAllNFT(
         address token,
         address to,

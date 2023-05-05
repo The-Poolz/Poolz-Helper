@@ -1,8 +1,6 @@
-const ERC721Helper = artifacts.require("ERC721Mock")
+const ERC721Helper = artifacts.require("ERC721HelperMock")
 const ERC721Token = artifacts.require("ERC721Token")
 const { assert } = require("chai")
-const constants = require("@openzeppelin/test-helpers/src/constants")
-const BigNumber = require("bignumber.js")
 const truffleAssert = require("truffle-assertions")
 
 contract("ERC721 Helper tests", (accounts) => {
@@ -28,19 +26,19 @@ contract("ERC721 Helper tests", (accounts) => {
     it("should transfer tokens in contract", async () => {
         await erc721Helper.transferNFTIn(erc721Token.address, itemId, owner)
         const ownerOfNFT = await erc721Token.ownerOf(itemId)
-        assert.equal(ownerOfNFT.toString(), erc721Helper.address)
+        assert.equal(erc721Helper.address, ownerOfNFT.toString())
     })
 
     it("should TransferNFTOut tokens from contract", async () => {
         await erc721Helper.transferNFTOut(erc721Token.address, itemId - 1, owner)
         const ownerOfNFT = await erc721Token.ownerOf(itemId)
-        assert.equal(ownerOfNFT.toString(), owner)
+        assert.equal(owner, ownerOfNFT.toString())
     })
 
     it("should setApproveForAllNFT", async () => {
         await erc721Helper.setApproveForAllNFT(erc721Token.address, user, true)
         const status = await erc721Token.isApprovedForAll(erc721Helper.address, user)
-        assert.equal(status, true)
+        assert.equal(true, status)
     })
 
     it("should return no allowance message", async () => {

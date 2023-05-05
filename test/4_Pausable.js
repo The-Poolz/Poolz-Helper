@@ -1,8 +1,6 @@
 const PausableHelper = artifacts.require("PausableHelper")
 const truffleAssert = require("truffle-assertions")
 const { assert } = require("chai")
-const constants = require("@openzeppelin/test-helpers/src/constants")
-const BigNumber = require("bignumber.js")
 
 contract("PausableHelper", (accounts) => {
   let pausableHelper

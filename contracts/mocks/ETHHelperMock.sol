@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "../ETHHelper.sol";
 
-contract ETHMock is ETHHelper {
+contract ETHHelperMock is ETHHelper {
     function receiveETH(
         uint256 minETHInvest
     ) external payable ReceivETH(msg.value, msg.sender, minETHInvest) {}
