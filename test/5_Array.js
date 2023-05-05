@@ -1,7 +1,5 @@
 const ArraysMock = artifacts.require("ArraysMock")
 const { assert } = require("chai")
-const constants = require("@openzeppelin/test-helpers/src/constants")
-const BigNumber = require("bignumber.js")
 const truffleAssert = require("truffle-assertions")
 
 contract("Array library", (accounts) => {

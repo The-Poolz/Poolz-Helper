@@ -1,4 +1,4 @@
-const EthHelper = artifacts.require("ETHMock")
+const EthHelper = artifacts.require("ETHHelperMock")
 const { assert } = require("chai")
 const truffleAssert = require("truffle-assertions")
 

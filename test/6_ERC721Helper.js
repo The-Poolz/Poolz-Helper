@@ -1,8 +1,6 @@
-const ERC721Helper = artifacts.require("ERC721Mock")
+const ERC721Helper = artifacts.require("ERC721HelperMock")
 const ERC721Token = artifacts.require("ERC721Token")
 const { assert } = require("chai")
-const constants = require("@openzeppelin/test-helpers/src/constants")
-const BigNumber = require("bignumber.js")
 const truffleAssert = require("truffle-assertions")
 
 contract("ERC721 Helper tests", (accounts) => {
