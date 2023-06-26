@@ -1,5 +1,5 @@
 {
-  "name": "poolz-helper-v2",
+  "name": "@poolzfinance/poolz-helper-v2",
   "version": "2.1.12",
   "description": "A single source of truth of helper contracts used by Poolz.",
   "main": "truffle-config.js",
