@@ -18,6 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "@openzeppelin/test-helpers": "^0.5.16",
+    "@spherex-xyz/contracts": "^1.0.5",
     "@spherex-xyz/openzeppelin-solidity": "^0.0.2",
     "@truffle/compile-common": "^0.3.10",
     "@truffle/hdwallet-provider": "^1.1.0",

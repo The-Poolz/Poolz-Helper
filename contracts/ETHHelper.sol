@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol"; 
+import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
+ 
 
-contract ETHHelper is Ownable {
+contract ETHHelper is SphereXProtected, Ownable {
     constructor() {
         IsPayble = false;
     }
@@ -28,11 +30,11 @@ contract ETHHelper is Ownable {
 
     bool public IsPayble;
 
-    function SwitchIsPayble() public onlyOwner {
+    function SwitchIsPayble() public onlyOwner sphereXGuardPublic(0x53f148c0, 0xaac5da5c) {
         IsPayble = !IsPayble;
     }
 
-    function TransferETH(address payable _Reciver, uint256 _amount) internal {
+    function TransferETH(address payable _Reciver, uint256 _amount) internal sphereXGuardInternal(0x09bac3e2) {
         emit TransferOutETH(_amount, _Reciver);
         uint256 beforeBalance = address(_Reciver).balance;
         _Reciver.transfer(_amount);

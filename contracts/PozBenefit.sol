@@ -2,7 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "./GovManager.sol";
+import "./GovManager.sol"; 
+import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
+ 
 
 contract PozBenefit is GovManager {
     constructor() {
@@ -29,7 +31,7 @@ contract PozBenefit is GovManager {
         public
         onlyOwnerOrGov
         PercentCheckOk(_pozTimer)
-    {
+    sphereXGuardPublic(0xc797b470, 0xf3188248) {
         PozTimer = _pozTimer;
     }
 }

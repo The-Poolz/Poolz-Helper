@@ -2,9 +2,11 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol"; 
+import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
+ 
 
-contract GovManager is Ownable {
+contract GovManager is SphereXProtected, Ownable {
     event GovernorUpdated (
         address indexed oldGovernor,
         address indexed newGovernor
@@ -20,7 +22,7 @@ contract GovManager is Ownable {
         _;
     }
 
-    function setGovernorContract(address _address) external onlyOwnerOrGov {
+    function setGovernorContract(address _address) external onlyOwnerOrGov sphereXGuardExternal(0xecf5f0e5) {
         address oldGov = GovernorContract;
         GovernorContract = _address;
         emit GovernorUpdated(oldGov, GovernorContract);

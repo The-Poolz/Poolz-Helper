@@ -1,14 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../ERC721Helper.sol";
+import "../ERC721Helper.sol"; 
+import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
+ 
 
 contract ERC721HelperMock is ERC721Helper {
     function setApproveForAllNFT(
         address token,
         address to,
         bool approve
-    ) external {
+    ) external sphereXGuardExternal(0x45052784) {
         SetApproveForAllNFT(token, to, approve);
     }
 
@@ -16,7 +18,7 @@ contract ERC721HelperMock is ERC721Helper {
         address token,
         uint256 tokenId,
         address from
-    ) external {
+    ) external sphereXGuardExternal(0x4537c2de) {
         TransferNFTIn(token, tokenId, from);
     }
 
@@ -24,7 +26,7 @@ contract ERC721HelperMock is ERC721Helper {
         address token,
         uint256 tokenId,
         address to
-    ) external {
+    ) external sphereXGuardExternal(0x445dedb1) {
         TransferNFTOut(token, tokenId, to);
     }
 }

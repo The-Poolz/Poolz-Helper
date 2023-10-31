@@ -1,15 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../Array.sol";
+import "../Array.sol"; 
+import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
+ 
 
-contract ArraysMock {
+contract ArraysMock is SphereXProtected {
     address[] private addrArr;
 
     function addIfNotExsist(
         address[] calldata arr,
         address elem
-    ) external returns (address[] memory) {
+    ) external sphereXGuardExternal(0x438f57db) returns (address[] memory) {
         addrArr = arr;
         Array.addIfNotExsist(addrArr, elem);
         return addrArr;
