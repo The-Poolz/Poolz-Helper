@@ -1,12 +1,12 @@
 {
-  "name": "@poolzfinance/poolz-helper-v2",
-  "version": "2.1.15",
-  "description": "A single source of truth of helper contracts used by Poolz.",
+  "name": "@spherex-xyz/poolz-helper-v2",
+  "version": "0.0.2",
+  "description": "A single source of truth of helper contracts used by Poolz Protected by Spherex.",
   "main": "truffle-config.js",
   "homepage": "https://github.com/The-Poolz/Poolz-Helper",
   "repository": {
     "type": "git",
-    "url": "https://github.com/The-Poolz/Poolz-Helper.git"
+    "url": "https://github.com/spherex-collab/Poolz-Helper.git"
   },
   "directories": {
     "test": "test"
@@ -14,7 +14,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Ashwin Arora",
+  "author": "SphereX",
   "license": "MIT",
   "dependencies": {
     "@openzeppelin/test-helpers": "^0.5.16",
