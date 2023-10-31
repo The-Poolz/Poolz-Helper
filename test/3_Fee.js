@@ -18,13 +18,13 @@ contract("Fee Helper Test", accounts => {
     })
 
     it('zero fee', async () => {
-        const oldBal = new BigNumber(await web3.eth.getBalance(payer))
+        const oldBal = await web3.eth.getBalance(payer)
         const txnReceipt = await feeHelper.PayFee({ from: payer })
         const rcpt = await web3.eth.getTransaction(txnReceipt.tx)
         const gasPrice = rcpt.gasPrice
         const actualBal = await web3.eth.getBalance(payer)
         const gas = new BigNumber(txnReceipt.receipt.gasUsed * gasPrice)
-        const expectedBal = oldBal.minus(gas)
+        const expectedBal = oldBal - gas
         assert.equal(actualBal, expectedBal, "invalid balance amount")
     })
 
