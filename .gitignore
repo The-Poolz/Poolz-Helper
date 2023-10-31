@@ -25,9 +25,13 @@ blockchain/geth/**
 blockchain/keystore/**
 blockchain/history
 
-#truffle
+# truffle
 .tern-port
 yarn.lock
 package-lock.json
+
+# hardhat
+cache/
+artifacts/
 
 # End of https://www.toptal.com/developers/gitignore/api/soliditytruffle
