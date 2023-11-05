@@ -1,6 +1,6 @@
 {
   "name": "@spherex-xyz/poolz-helper-v2",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A single source of truth of helper contracts used by Poolz Protected by Spherex.",
   "main": "truffle-config.js",
   "homepage": "https://github.com/The-Poolz/Poolz-Helper",

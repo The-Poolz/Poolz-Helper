@@ -34,4 +34,8 @@ package-lock.json
 cache/
 artifacts/
 
+# SphereX
+code_id_mapping.json
+inheritance_code.md
+
 # End of https://www.toptal.com/developers/gitignore/api/soliditytruffle
