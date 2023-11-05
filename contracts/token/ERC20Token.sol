@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol"; 
+import "@spherex-xyz/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "@spherex-xyz/openzeppelin-solidity/contracts/access/Ownable.sol"; 
 import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
  
 

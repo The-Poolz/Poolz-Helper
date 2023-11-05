@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/interfaces/IERC2981.sol";
+import "@spherex-xyz/openzeppelin-solidity/contracts/interfaces/IERC2981.sol";
 
 interface IVaultManager is IERC2981 {
     function depositByToken(address _tokenAddress, uint _amount) external returns (uint vaultId);

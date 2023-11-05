@@ -44,7 +44,6 @@
     "coveralls": "^3.1.0",
     "ganache-cli": "^6.12.2",
     "hardhat": "^2.18.3",
-    "hardhat-preprocessor": "^0.1.5",
     "node-fetch": ">=2.6.1",
     "sol-merger": "^3.1.0",
     "solidity-coverage": "^0.7.21",

@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/security/Pausable.sol";
+import "@spherex-xyz/openzeppelin-solidity/contracts/security/Pausable.sol";
 import "./GovManager.sol"; 
 import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
  
