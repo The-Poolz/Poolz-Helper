@@ -17,6 +17,7 @@
   "author": "Ashwin Arora",
   "license": "MIT",
   "dependencies": {
+    "@ironblocks/firewall-consumer": "^1.0.3",
     "@openzeppelin/test-helpers": "^0.5.16",
     "@truffle/compile-common": "^0.3.10",
     "@truffle/hdwallet-provider": "^1.1.0",

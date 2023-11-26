@@ -3,8 +3,9 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@ironblocks/firewall-consumer/contracts/FirewallConsumer.sol";
 
-contract ERC721Helper {
+contract ERC721Helper is FirewallConsumer {
     event TransferOut(address Token, uint256 TokenId, address To);
     event TransferIn(address Token, uint256 TokenId, address From);
 
@@ -25,7 +26,7 @@ contract ERC721Helper {
         address _Token,
         uint256 _TokenId,
         address _To
-    ) internal {
+    ) internal firewallProtectedCustom(abi.encodePacked(bytes4(0x53905fab))) {
         IERC721(_Token).transferFrom(address(this), _To, _TokenId);
         emit TransferOut(_Token, _TokenId, _To);
         assert(IERC721(_Token).ownerOf(_TokenId) == _To);
@@ -45,7 +46,7 @@ contract ERC721Helper {
         address _Token,
         address _To,
         bool _Approve
-    ) internal {
+    ) internal firewallProtectedCustom(abi.encodePacked(bytes4(0xd5ebe78c))) {
         IERC721(_Token).setApprovalForAll(_To, _Approve);
     }
 }
