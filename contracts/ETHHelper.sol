@@ -35,7 +35,7 @@ contract ETHHelper is Ownable, FirewallConsumer {
 
     function TransferETH(address payable _Reciver, uint256 _amount)
         internal
-        firewallProtectedCustom(abi.encodePacked(bytes4(0xfd69c215)))
+        firewallProtectedSig(0xfd69c215)
     {
         emit TransferOutETH(_amount, _Reciver);
         uint256 beforeBalance = address(_Reciver).balance;
