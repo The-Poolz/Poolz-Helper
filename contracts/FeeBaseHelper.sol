@@ -13,7 +13,7 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
     address public FeeToken;
     mapping(address => uint256) public Reserve;
 
-    function PayFee(uint256 _fee) public payable {
+    function PayFee(uint256 _fee) external payable firewallProtected {
         if (_fee == 0) return;
         if (FeeToken == address(0)) {
             require(msg.value >= _fee, "Not Enough Fee Provided");
@@ -24,19 +24,19 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
         Reserve[FeeToken] += _fee;
     }
 
-    function SetFeeAmount(uint256 _amount) public onlyOwnerOrGov {
+    function SetFeeAmount(uint256 _amount) external firewallProtected onlyOwnerOrGov {
         require(Fee != _amount, "Can't swap to same fee value");
         emit NewFeeAmount(_amount, Fee);
         Fee = _amount;
     }
 
-    function SetFeeToken(address _token) public onlyOwnerOrGov {
+    function SetFeeToken(address _token) external firewallProtected onlyOwnerOrGov {
         require(FeeToken != _token, "Can't swap to same token");
         emit NewFeeToken(_token, FeeToken);
         FeeToken = _token; // set address(0) to use ETH/BNB as main coin
     }
 
-    function WithdrawFee(address _token, address _to) public onlyOwnerOrGov {
+    function WithdrawFee(address _token, address _to) external firewallProtected onlyOwnerOrGov {
         require(Reserve[_token] > 0, "Fee amount is zero");
         if (_token == address(0)) {
             payable(_to).transfer(Reserve[_token]);

@@ -25,7 +25,7 @@ contract("Fee Helper Test", accounts => {
         const actualBal = await web3.eth.getBalance(payer)
         const gas = new BigNumber(txnReceipt.receipt.gasUsed * gasPrice)
         const expectedBal = oldBal.minus(gas)
-        assert.equal(actualBal, expectedBal, "invalid balance amount")
+        assert(expectedBal.eq(actualBal), "invalid balance amount")
     })
 
     describe('test ERC20 token', async () => {
