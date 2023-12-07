@@ -22,9 +22,9 @@ describe('Fee Helper Test', function () {
   });
 
   it('zero fee', async () => {
-    const gasPrice = 250000000000;
+    const gasPrice = 2500000000;
     const oldBal = await payer.getBalance();
-    const tx = await feeHelper.connect(payer).PayFee({ gasPrice: 250000000000 });
+    const tx = await feeHelper.connect(payer).PayFee({ gasPrice: 2500000000 });
     const txReceipt = await tx.wait();
     const actualBal = await payer.getBalance();
     const gas = txReceipt.gasUsed.mul(gasPrice);
