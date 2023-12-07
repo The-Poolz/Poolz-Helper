@@ -1,0 +1,71 @@
+name: Build and Test
+
+on:
+  pull_request:
+
+jobs:
+  Gas-Test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' # This line ensures that this job only runs on pull requests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0'
+
+      - name: Restore cache
+        id: restore-cache
+        uses: actions/cache/restore@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install HardHat
+        if: steps.restore-cache.outputs.cache-hit != 'true'
+        run: npm i hardhat
+
+      - name: Run tests
+        run: npx hardhat test
+
+  Coverage-Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0'
+
+      - name: Restore cache
+        id: restore-cache
+        uses: actions/cache/restore@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install HardHat
+        if: steps.restore-cache.outputs.cache-hit != 'true'
+        run: npm i hardhat
+
+      - name: Run tests and generate coverage
+        run: npx hardhat coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+
+      # Save cache only if it was not restored before
+      - name: Save cache
+        if: steps.restore-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/package.json') }}

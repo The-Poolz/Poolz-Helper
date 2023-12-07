@@ -8,8 +8,10 @@ node_modules
 # testing
 coverage
 coverage.json
-
-secret.js
+cache
+artifacts
+typechain
+typechain-types
 
 # production
 build
