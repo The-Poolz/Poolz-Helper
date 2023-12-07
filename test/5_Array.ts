@@ -11,7 +11,7 @@ describe('Array library', function () {
   });
 
   it('add array element if not exists', async () => {
-    let [addr0, addr1, addr2, addr4] = await ethers.getSigners();
+    const [addr0, addr1, addr2, addr4] = await ethers.getSigners();
     const addrArray = [addr0.address, addr1.address, addr2.address];
     const copyElem = addr4.address;
     const arr = await arrayLibrary.callStatic.addIfNotExsist(addrArray, copyElem);
@@ -30,7 +30,7 @@ describe('Array library', function () {
   });
 
   it('keep address N Elements In Array', async () => {
-    let [addr0, addr1, addr2, addr4] = await ethers.getSigners();
+    const [addr0, addr1, addr2, addr4] = await ethers.getSigners();
     const arr = [addr0.address, addr1.address, addr2.address, addr4.address];
     const newArr = await arrayLibrary.callStatic.KeepNElementsInArray(arr, 2);
     expect(newArr.toString()).to.equal(arr.slice(0, 2).toString());
@@ -57,7 +57,7 @@ describe('Array library', function () {
   });
 
   it('is In Array', async () => {
-    let [addr0, addr1, addr2, addr4] = await ethers.getSigners();
+    const [addr0, addr1, addr2, addr4] = await ethers.getSigners();
     const arr = [addr0.address, addr1.address, addr2.address];
     let status = await arrayLibrary.callStatic.isInArray(arr, addr0.address);
     expect(status).to.equal(true);
