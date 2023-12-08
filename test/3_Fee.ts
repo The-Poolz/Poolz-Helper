@@ -1,8 +1,6 @@
-import { ZERO_ADDRESS } from '../scripts/constants.ts';
-import { deployed } from '../scripts/deploy.ts';
-import { ERC20Token } from '../typechain-types';
-import { FeeHelper } from '../typechain-types';
-import { FeeBaseHelper } from '../typechain-types';
+import { ZERO_ADDRESS } from '../scripts/constants';
+import { deployed } from '../scripts/deploy';
+import { ERC20Token, FeeBaseHelper, FeeHelper } from '../typechain-types';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -24,7 +22,7 @@ describe('Fee Helper Test', function () {
   it('zero fee', async () => {
     const gasPrice = 2500000000;
     const oldBal = await payer.getBalance();
-    const tx = await feeHelper.connect(payer).PayFee({ gasPrice: 2500000000 });
+    const tx = await feeHelper.connect(payer).PayFee({ gasPrice: gasPrice });
     const txReceipt = await tx.wait();
     const actualBal = await payer.getBalance();
     const gas = txReceipt.gasUsed.mul(gasPrice);

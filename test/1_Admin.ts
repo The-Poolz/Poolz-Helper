@@ -1,8 +1,6 @@
-import { ZERO_ADDRESS } from '../scripts/constants.ts';
-import { deployed } from '../scripts/deploy.ts';
-import { GovManager } from '../typechain-types';
-import { ETHHelper } from '../typechain-types';
-import { PozBenefit } from '../typechain-types';
+import { ZERO_ADDRESS } from '../scripts/constants';
+import { deployed } from '../scripts/deploy';
+import { GovManager, ETHHelper, PozBenefit } from '../typechain-types';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';

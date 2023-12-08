@@ -1,7 +1,6 @@
 import { MAX_UINT256 } from '../scripts/constants';
-import { deployed } from '../scripts/deploy.ts';
-import { ERC20HelperMock } from '../typechain-types';
-import { ERC20Token } from '../typechain-types';
+import { deployed } from '../scripts/deploy';
+import { ERC20HelperMock, ERC20Token } from '../typechain-types';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';

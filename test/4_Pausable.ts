@@ -1,4 +1,4 @@
-import { deployed } from '../scripts/deploy.ts';
+import { deployed } from '../scripts/deploy';
 import { PausableHelper } from '../typechain-types';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';

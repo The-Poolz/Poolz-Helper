@@ -1,6 +1,5 @@
-import { deployed } from '../scripts/deploy.ts';
-import { ERC20Token } from '../typechain-types';
-import { ERC721Token } from '../typechain-types';
+import { deployed } from '../scripts/deploy';
+import { ERC20Token, ERC721Token } from '../typechain-types';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';

@@ -1,4 +1,4 @@
-import { deployed } from '../scripts/deploy.ts';
+import { deployed } from '../scripts/deploy';
 import { ETHHelperMock } from '../typechain-types';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
