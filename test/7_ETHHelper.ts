@@ -33,6 +33,15 @@ describe('ETH Helper tests', function () {
     );
   });
 
+  it('should revert default eth transfer', async () => {
+    await expect(
+      owner.sendTransaction({
+        to: ethHelper.address,
+        value: 100,
+      }),
+    ).to.be.reverted;
+  });
+
   after(async () => {
     contractBalance = await ethers.provider.getBalance(ethHelper.address);
     expect('0').to.be.equal(contractBalance.toString());
