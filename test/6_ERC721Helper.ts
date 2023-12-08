@@ -16,11 +16,14 @@ describe('ERC721 Helper tests', function () {
     //await deployed('ETHHelperMock')
     erc721Helper = await deployed('ERC721HelperMock');
     erc721Token = await deployed('ERC721Token');
-    await erc721Token.setApprovalForAll(erc721Helper.address, true);
   });
 
   beforeEach(async () => {
     await erc721Token.awardItem(owner.address, itemId.toString());
+    const status = await erc721Token.isApprovedForAll(erc721Helper.address, user.address);
+    if (!status) {
+      await erc721Token.setApprovalForAll(erc721Helper.address, true);
+    }
   });
 
   afterEach(async () => {
@@ -28,6 +31,14 @@ describe('ERC721 Helper tests', function () {
   });
 
   it('should transfer tokens in contract', async () => {
+    await erc721Helper.transferNFTIn(erc721Token.address, itemId, owner.address);
+    const ownerOfNFT = await erc721Token.ownerOf(itemId);
+    expect(ownerOfNFT.toString()).to.be.equal(erc721Helper.address);
+  });
+
+  it('should transfer NFT token after approve', async () => {
+    await erc721Token.setApprovalForAll(erc721Helper.address, false);
+    await erc721Token.approve(erc721Helper.address, itemId);
     await erc721Helper.transferNFTIn(erc721Token.address, itemId, owner.address);
     const ownerOfNFT = await erc721Token.ownerOf(itemId);
     expect(ownerOfNFT.toString()).to.be.equal(erc721Helper.address);
