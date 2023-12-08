@@ -10,51 +10,41 @@ async function downloadAndExtractZip(url: string, extractPath: string): Promise<
   const response = await axios({
     url,
     method: 'GET',
-    responseType: 'stream',
+    responseType: 'arraybuffer', // Use 'arraybuffer' to handle binary data
   });
 
   const zipPath = './temp.zip';
-  const writer = fs.createWriteStream(zipPath);
+  fs.writeFileSync(zipPath, response.data);
 
-  response.data.pipe(writer);
+  const zip = new AdmZip(zipPath);
 
-  return new Promise((resolve, reject) => {
-    writer.on('finish', () => {
-      const zip = new AdmZip(zipPath);
+  zip.getEntries().forEach(entry => {
+    const entryName = entry.entryName;
+    const entryPath = `${extractPath}/${entryName}`;
 
-      // Validate the size of the extracted content
-      const entries = zip.getEntries();
-      const totalSize = entries.reduce((size, entry) => size + entry.header.size, 0);
-
-      // Set a threshold for the total size (adjust as needed)
-      const MAX_TOTAL_SIZE = 1000000000; // 1 GB
-
-      if (totalSize > MAX_TOTAL_SIZE) {
-        fs.unlinkSync(zipPath);
-        reject('Exceeded max total size');
-        return;
+    // Check if the entry is a directory
+    if (entry.isDirectory) {
+      // Create the directory if it doesn't exist
+      if (!fs.existsSync(entryPath)) {
+        fs.mkdirSync(entryPath, { recursive: true });
       }
-
-      // Extract the contents to the specified path
-      zip.extractAllTo(extractPath, /*overwrite*/ true);
-
-      // Get the name of the extracted folder
-      const extractedFolderName = entries[0].entryName.split('/')[0];
-
-      // Remove all words that start with a hyphen from the extracted folder name
-      const modifiedFolderName = extractedFolderName.replace(/-[^/]+/g, '');
-
-      fs.renameSync(`${extractPath}${extractedFolderName}`, `${extractPath}${modifiedFolderName}`);
-
-      fs.unlinkSync(zipPath);
-      resolve();
-    });
-
-    writer.on('error', err => {
-      fs.unlinkSync(zipPath);
-      reject(err);
-    });
+    } else {
+      // Extract the file
+      fs.writeFileSync(entryPath, entry.getData());
+    }
   });
+
+  // Get the name of the extracted folder (e.g., "LockDealNFT-master")
+  const extractedFolderName = zip.getEntries()[0].entryName.split('/')[0];
+
+  // Remove all words that start with a hyphen from the extracted folder name
+  const modifiedFolderName = extractedFolderName.replace(/-[^/]+/g, '');
+
+  // Rename the extracted folder
+  fs.renameSync(`${extractPath}/${extractedFolderName}`, `${extractPath}/${modifiedFolderName}`);
+
+  // Clean up
+  fs.unlinkSync(zipPath);
 }
 
 export { downloadAndExtractZip };
