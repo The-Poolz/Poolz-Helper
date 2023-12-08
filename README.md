@@ -1,6 +1,6 @@
 # Poolz-Helper
 
-[![Build Status](https://app.travis-ci.com/The-Poolz/Poolz-Helper.svg?branch=master)](https://app.travis-ci.com/The-Poolz/Poolz-Helper)
+[![Build Status](https://github.com/The-Poolz/Poolz-Helper/actions/workflows/node.js.yml/badge.svg)](https://github.com/The-Poolz/Poolz-Helper/actions/workflows/node.js.yml)
 [![codecov](https://codecov.io/gh/The-Poolz/Poolz-Helper/branch/master/graph/badge.svg?token=JIz6mduCuo)](https://codecov.io/gh/The-Poolz/Poolz-Helper)
 [![CodeFactor](https://www.codefactor.io/repository/github/the-poolz/poolz-helper/badge)](https://www.codefactor.io/repository/github/the-poolz/poolz-helper)
 [![npm version](https://img.shields.io/npm/v/@poolzfinance/poolz-helper-v2/latest.svg)](https://www.npmjs.com/package/@poolzfinance/poolz-helper-v2/v/latest)
