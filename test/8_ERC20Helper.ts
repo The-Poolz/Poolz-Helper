@@ -3,8 +3,7 @@ import { deployed } from '../scripts/deploy';
 import { ERC20HelperMock, ERC20Token } from '../typechain-types';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
-import { BigNumber } from 'ethers';
-import { utils } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { ethers } from 'hardhat';
 
 describe('ERC20 Helper tests', function () {
