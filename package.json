@@ -1,6 +1,6 @@
 {
   "name": "@poolzfinance/poolz-helper-v2",
-  "version": "2.1.15",
+  "version": "2.2.0",
   "description": "A single source of truth of helper contracts used by Poolz.",
   "main": "hardhat.config.ts",
   "homepage": "https://github.com/The-Poolz/Poolz-Helper",
