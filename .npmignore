@@ -1,0 +1,29 @@
+.nvmrc
+.dockerignore
+.verb.md
+test
+mocks
+
+# depedencies
+node_modules
+
+# misc
+.DS_Store
+.env
+npm-debug.log
+.truffle-solidity-loader
+.vagrant/**
+blockchain/geth/**
+blockchain/keystore/**
+blockchain/history
+# production
+build
+build_webpack
+
+# testing
+coverage
+coverage.json
+cache
+artifacts
+typechain
+typechain-types
