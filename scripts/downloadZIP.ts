@@ -1,8 +1,8 @@
 import AdmZip from 'adm-zip';
-import axios from 'axios';
-import fs from 'fs';
+import * as fs from "fs"
+import axios from "axios"
 
-async function downloadAndExtractZip(url: string, extractPath: string): Promise<void> {
+export async function downloadAndExtractZip(url: string, extractPath: string): Promise<void> {
   if (!fs.existsSync(extractPath)) {
     fs.mkdirSync(extractPath, { recursive: true });
   }
@@ -46,5 +46,3 @@ async function downloadAndExtractZip(url: string, extractPath: string): Promise<
   // Clean up
   fs.unlinkSync(zipPath);
 }
-
-export { downloadAndExtractZip };
