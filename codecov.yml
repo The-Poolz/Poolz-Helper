@@ -1,0 +1,12 @@
+ignore:
+  - "**/mocks"
+  - "**/PozBenefit.sol"
+
+coverage:
+  status:
+    patch:
+      default:
+        # basic
+        target: auto
+        threshold: 85%
+        base: auto
