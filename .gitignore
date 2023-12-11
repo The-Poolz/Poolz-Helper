@@ -32,6 +32,5 @@ blockchain/history
 .tern-port
 yarn.lock
 package-lock.json
-dist
 
 # End of https://www.toptal.com/developers/gitignore/api/soliditytruffle
