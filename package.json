@@ -1,8 +1,9 @@
 {
   "name": "@poolzfinance/poolz-helper-v2",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A single source of truth of helper contracts used by Poolz.",
-  "main": "hardhat.config.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "homepage": "https://github.com/The-Poolz/Poolz-Helper",
   "repository": {
     "type": "git",
