@@ -12,13 +12,11 @@ contract ERC20Token is ERC20, Ownable {
      * @dev assign totalSupply to account creating this contract
      */
 
-    constructor(string memory _TokenName, string memory _TokenSymbol)
-        ERC20(_TokenName, _TokenSymbol)
-    {
-        _mint(msg.sender, 5000000000000);
+    constructor(string memory _TokenName, string memory _TokenSymbol) ERC20(_TokenName, _TokenSymbol) {
+        _mint(msg.sender, 5_000_000 * 10 ** 18);
     }
 
     function FreeTest() public {
-        _mint(msg.sender, 5000000);
+        _mint(msg.sender, 5_000_00 * 10 ** 18);
     }
 }
