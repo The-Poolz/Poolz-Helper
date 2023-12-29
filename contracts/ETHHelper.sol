@@ -2,8 +2,9 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@ironblocks/firewall-consumer/contracts/FirewallConsumer.sol";
 
-contract ETHHelper is Ownable {
+contract ETHHelper is Ownable, FirewallConsumer {
     constructor() {
         IsPayble = false;
     }
@@ -32,7 +33,10 @@ contract ETHHelper is Ownable {
         IsPayble = !IsPayble;
     }
 
-    function TransferETH(address payable _Reciver, uint256 _amount) internal {
+    function TransferETH(address payable _Reciver, uint256 _amount)
+        internal
+        firewallProtectedSig(0xfd69c215)
+    {
         emit TransferOutETH(_amount, _Reciver);
         uint256 beforeBalance = address(_Reciver).balance;
         _Reciver.transfer(_amount);
