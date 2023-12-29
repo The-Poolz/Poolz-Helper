@@ -17,7 +17,7 @@ describe('Token Test', function () {
 
   it('mint ERC20 tokens', async () => {
     const oldBalance = await ERC20Token.balanceOf(owner.address);
-    const mintAmount = 5000000;
+    const mintAmount = ethers.utils.parseUnits('500000', 18);
     await ERC20Token.FreeTest();
     const newBalance = await ERC20Token.balanceOf(owner.address);
     expect(newBalance).to.be.equal(oldBalance.add(mintAmount));
