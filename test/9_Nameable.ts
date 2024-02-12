@@ -4,7 +4,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-describe('ERC20 Helper tests', function () {
+describe('Nameable tests', function () {
   let nameable: Nameable;
   let owner: SignerWithAddress;
   const name = 'TEST name';
