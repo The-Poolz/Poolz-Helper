@@ -8,7 +8,7 @@ describe('Nameable tests', function () {
   const version = '1.0.0';
 
   before(async () => {
-    nameable = await deployed('Nameable', name, version);
+    nameable = await deployed('NameableMock', name, version);
   });
 
   it('should return name of contract', async () => {

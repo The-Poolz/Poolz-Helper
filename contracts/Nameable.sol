@@ -3,9 +3,9 @@ pragma solidity ^0.8.0;
 
 /**
  * @title Nameable Helper Contract
- * @dev Contract defines functions to retrieve the name and version of a contract.
+ * @dev Abstract contract defines functions to retrieve the name and version of a contract.
  */
-contract Nameable {
+abstract contract Nameable {
     string private _name;
     string private _version;
 
