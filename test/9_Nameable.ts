@@ -1,17 +1,13 @@
 import { deployed } from '../scripts/deploy';
 import { Nameable } from '../typechain-types';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
 
 describe('Nameable tests', function () {
   let nameable: Nameable;
-  let owner: SignerWithAddress;
   const name = 'TEST name';
   const version = '1.0.0';
 
   before(async () => {
-    [owner] = await ethers.getSigners();
     nameable = await deployed('Nameable', name, version);
   });
 
