@@ -13,7 +13,7 @@ abstract contract Nameable {
     function name() external virtual pure returns(string memory);
 
     /**
-     * @dev Returns the `Strapi` version of the contract.g
+     * @dev Returns the `Strapi` version of the contract.
      * @return A string representin the version of the contract.
      */
     function version() external virtual pure returns(string memory);
