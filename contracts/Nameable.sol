@@ -14,7 +14,7 @@ abstract contract Nameable {
 
     /**
      * @dev Returns the version of the contract.
-     * @return A string representin the version of the contract.
+     * @return A string representing the version of the contract.
      */
     function version() external virtual pure returns(string memory);
 }
