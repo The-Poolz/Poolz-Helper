@@ -1,6 +1,6 @@
 {
   "name": "@poolzfinance/poolz-helper-v2",
-  "version": "2.3.4",
+  "version": "2.3.5",
   "description": "A single source of truth of helper contracts used by Poolz.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
