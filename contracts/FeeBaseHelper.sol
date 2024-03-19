@@ -13,7 +13,7 @@ contract FeeBaseHelper is ERC20Helper, GovManager {
     address public FeeToken;
     mapping(address => uint256) public Reserve;
 
-    function PayFee(uint256 _fee) external payable firewallProtected {
+    function PayFee(uint256 _fee) public payable firewallProtected {
         if (_fee == 0) return;
         if (FeeToken == address(0)) {
             require(msg.value >= _fee, "Not Enough Fee Provided");
