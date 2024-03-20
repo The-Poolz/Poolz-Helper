@@ -1,6 +1,6 @@
 import { ZERO_ADDRESS } from '../scripts/constants';
 import { deployed } from '../scripts/deploy';
-import { ERC20Token, FeeBaseHelper, FeeHelper } from '../typechain-types';
+import { ERC20Token, FeeHelper } from '../typechain-types';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
@@ -9,20 +9,18 @@ describe('Fee Helper Test', function () {
   const fee: number = 100000;
   let token: ERC20Token;
   let payer: SignerWithAddress, receiver: SignerWithAddress;
-  let feeHelper: FeeHelper, feeBase: FeeBaseHelper;
+  let feeHelper: FeeHelper;
 
   before(async () => {
     [payer, receiver] = await ethers.getSigners();
     feeHelper = await deployed('FeeHelper');
-    const FeeBaseHelper = await ethers.getContractFactory('FeeBaseHelper');
-    feeBase = await FeeBaseHelper.attach(await feeHelper.BaseFee());
     token = await deployed('ERC20Token', 'TEST token', 'TEST');
   });
 
   it('zero fee', async () => {
     const gasPrice = 2500000000;
     const oldBal = await payer.getBalance();
-    const tx = await feeHelper.connect(payer).PayFee({ gasPrice: gasPrice });
+    const tx = await feeHelper.connect(payer).MethodWithFee({ gasPrice: gasPrice });
     const txReceipt = await tx.wait();
     const actualBal = await payer.getBalance();
     const gas = txReceipt.gasUsed.mul(gasPrice);
@@ -32,24 +30,24 @@ describe('Fee Helper Test', function () {
 
   describe('test ERC20 token', async () => {
     it('should set fee token', async () => {
-      await feeHelper.SetFee(fee);
-      await feeHelper.SetToken(token.address);
-      const feeToken = await feeBase.FeeToken();
-      const actualFee = await feeBase.Fee();
+      await feeHelper.SetFeeAmount(fee);
+      await feeHelper.SetFeeToken(token.address);
+      const feeToken = await feeHelper.FeeToken();
+      const actualFee = await feeHelper.FeeAmount();
       expect(actualFee).to.be.equal(fee);
       expect(feeToken).to.be.equal(token.address);
     });
 
     it('should pay', async () => {
       await token.connect(payer).approve(feeHelper.address, fee);
-      const oldBal = await token.balanceOf(feeBase.address);
-      await feeHelper.connect(payer).PayFee();
-      const actualBal = await token.balanceOf(feeBase.address);
+      const oldBal = await token.balanceOf(feeHelper.address);
+      await feeHelper.connect(payer).MethodWithFee();
+      const actualBal = await token.balanceOf(feeHelper.address);
       expect(actualBal).to.be.equal(oldBal.add(fee));
     });
 
     it('should withdraw', async () => {
-      await feeHelper.WithdrawFee(payer.address);
+      await feeHelper.WithdrawFee(token.address, payer.address);
       const actualBal = await token.balanceOf(payer.address);
       expect(actualBal).to.be.equal(await token.totalSupply());
     });
@@ -57,23 +55,23 @@ describe('Fee Helper Test', function () {
 
   describe('test ETH coin', async () => {
     it('should set fee token', async () => {
-      await feeHelper.SetToken(ZERO_ADDRESS);
-      const feeToken = await feeBase.FeeToken();
-      const actualFee = await feeBase.Fee();
+      await feeHelper.SetFeeToken(ZERO_ADDRESS);
+      const feeToken = await feeHelper.FeeToken();
+      const actualFee = await feeHelper.FeeAmount();
       expect(actualFee).to.be.equal(fee);
       expect(feeToken).to.be.equal(ZERO_ADDRESS);
     });
 
     it('should pay', async () => {
-      const oldBal = await ethers.provider.getBalance(feeBase.address);
-      await feeHelper.connect(payer).PayFee({ value: fee });
-      const actualBal = await ethers.provider.getBalance(feeBase.address);
+      const oldBal = await ethers.provider.getBalance(feeHelper.address);
+      await feeHelper.connect(payer).MethodWithFee({ value: fee });
+      const actualBal = await ethers.provider.getBalance(feeHelper.address);
       expect(actualBal).to.be.equal(oldBal.add(fee));
     });
 
     it('should withdraw', async () => {
       const oldBal = await ethers.provider.getBalance(receiver.address);
-      await feeHelper.WithdrawFee(receiver.address);
+      await feeHelper.WithdrawFee(ZERO_ADDRESS, receiver.address);
       const actualBal = await ethers.provider.getBalance(receiver.address);
       expect(actualBal).to.be.equal(oldBal.add(fee));
     });

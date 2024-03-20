@@ -3,46 +3,77 @@ pragma solidity ^0.8.0;
 
 import "./ERC20Helper.sol";
 import "./GovManager.sol";
+import "./interfaces/IWhiteList.sol";
 
-contract FeeBaseHelper is ERC20Helper, GovManager {
-    event TransferInETH(uint256 Amount, address From);
-    event NewFeeAmount(uint256 NewFeeAmount, uint256 OldFeeAmount);
+abstract contract FeeBaseHelper is ERC20Helper, GovManager {
+    event TransferInETH(uint Amount, address From);
+    event NewFeeAmount(uint NewFeeAmount, uint OldFeeAmount);
     event NewFeeToken(address NewFeeToken, address OldFeeToken);
 
-    uint256 public Fee;
-    address public FeeToken;
-    mapping(address => uint256) public Reserve;
+    error NotEnoughFeeProvided();
+    error FeeAmountIsZero();
+    error TransferFailed();
 
-    function PayFee(uint256 _fee) public payable firewallProtected {
-        if (_fee == 0) return;
+    uint public FeeAmount;
+    uint public WhiteListId;
+    address public FeeToken;
+    address public WhiteListAddress;
+    mapping(address => uint) public FeeReserve;
+
+    function TakeFee() internal virtual firewallProtected {
+        uint feeToPay = FeeAmount;
+        if(feeToPay == 0) return;
+        uint credits = getCredits(msg.sender);
+        if(credits > 0) {
+            if(credits < feeToPay) {
+                feeToPay -= credits;
+                IWhiteList(WhiteListAddress).Register(msg.sender, WhiteListId, credits);
+            } else {
+                feeToPay = 0;
+                IWhiteList(WhiteListAddress).Register(msg.sender, WhiteListId, feeToPay);
+            }
+        }
+        if( feeToPay == 0 ) return;
         if (FeeToken == address(0)) {
-            require(msg.value >= _fee, "Not Enough Fee Provided");
+            if (msg.value < feeToPay) revert NotEnoughFeeProvided();
             emit TransferInETH(msg.value, msg.sender);
         } else {
-            TransferInToken(FeeToken, msg.sender, _fee);
+            TransferInToken(FeeToken, msg.sender, feeToPay);
         }
-        Reserve[FeeToken] += _fee;
+        FeeReserve[FeeToken] += feeToPay;
     }
 
-    function SetFeeAmount(uint256 _amount) external firewallProtected onlyOwnerOrGov {
-        require(Fee != _amount, "Can't swap to same fee value");
-        emit NewFeeAmount(_amount, Fee);
-        Fee = _amount;
+    function getCredits(address _user) public view returns(uint) {
+        if(WhiteListAddress == address(0) || WhiteListId == 0) return 0;
+        return IWhiteList(WhiteListAddress).Check(_user, WhiteListId);
+    }
+
+    function SetFeeAmount(uint _amount) external firewallProtected onlyOwnerOrGov {
+        emit NewFeeAmount(_amount, FeeAmount);
+        FeeAmount = _amount;
     }
 
     function SetFeeToken(address _token) external firewallProtected onlyOwnerOrGov {
-        require(FeeToken != _token, "Can't swap to same token");
         emit NewFeeToken(_token, FeeToken);
         FeeToken = _token; // set address(0) to use ETH/BNB as main coin
     }
 
+    function setWhiteListAddress(address _whiteListAddr) public onlyOwnerOrGov {
+        WhiteListAddress = _whiteListAddr;
+    }
+
+    function setWhiteListId(uint _id) public onlyOwnerOrGov {
+        WhiteListId = _id;
+    }
+
     function WithdrawFee(address _token, address _to) external firewallProtected onlyOwnerOrGov {
-        require(Reserve[_token] > 0, "Fee amount is zero");
+        if (FeeReserve[_token] == 0) revert FeeAmountIsZero();
         if (_token == address(0)) {
-            payable(_to).transfer(Reserve[_token]);
+            (bool success, ) = _to.call{value: FeeReserve[_token]}("");
+            if (!success) revert TransferFailed();
         } else {
-            TransferToken(_token, _to, Reserve[_token]);
+            TransferToken(_token, _to, FeeReserve[_token]);
         }
-        Reserve[_token] = 0;
+        FeeReserve[_token] = 0;
     }
 }
