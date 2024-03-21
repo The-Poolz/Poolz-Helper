@@ -33,13 +33,18 @@ abstract contract FeeBaseHelper is ERC20Helper, GovManager {
                 return;
             }
         }
-        if (FeeToken == address(0)) {
-            if (msg.value < feeToPay) revert NotEnoughFeeProvided();
+        _TakeFee(feeToPay);
+    }
+
+    function _TakeFee(uint _fee) private {
+        address _feeToken = FeeToken;   // cache storage reads
+        if (_feeToken == address(0)) {
+            if (msg.value < _fee) revert NotEnoughFeeProvided();
             emit TransferInETH(msg.value, msg.sender);
         } else {
-            TransferInToken(FeeToken, msg.sender, feeToPay);
+            TransferInToken(_feeToken, msg.sender, _fee);
         }
-        FeeReserve[FeeToken] += feeToPay;
+        FeeReserve[_feeToken] += _fee;
     }
 
     function getCredits(address _user) public view returns(uint) {
