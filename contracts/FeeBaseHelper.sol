@@ -51,21 +51,13 @@ abstract contract FeeBaseHelper is ERC20Helper, GovManager {
         return IWhiteList(WhiteListAddress).Check(_user, WhiteListId);
     }
 
-    function SetFeeAmount(uint _amount) external firewallProtected onlyOwnerOrGov {
-        emit NewFeeAmount(_amount, FeeAmount);
+    function setFee(address _token, uint _amount) external firewallProtected onlyOwnerOrGov {
+        FeeToken = _token;
         FeeAmount = _amount;
     }
 
-    function SetFeeToken(address _token) external firewallProtected onlyOwnerOrGov {
-        emit NewFeeToken(_token, FeeToken);
-        FeeToken = _token; // set address(0) to use ETH/BNB as main coin
-    }
-
-    function setWhiteListAddress(address _whiteListAddr) public onlyOwnerOrGov {
+    function setWhiteList(address _whiteListAddr, uint _id) external firewallProtected onlyOwnerOrGov {
         WhiteListAddress = _whiteListAddr;
-    }
-
-    function setWhiteListId(uint _id) public onlyOwnerOrGov {
         WhiteListId = _id;
     }
 

@@ -33,9 +33,8 @@ describe('Fee Helper Test', function () {
   });
 
   describe('test ERC20 token', async () => {
-    it('should set fee token', async () => {
-      await feeHelper.SetFeeAmount(fee);
-      await feeHelper.SetFeeToken(token.address);
+    it('should set fee token and amount', async () => {
+      await feeHelper.setFee(token.address, fee);
       const feeToken = await feeHelper.FeeToken();
       const actualFee = await feeHelper.FeeAmount();
       expect(actualFee).to.be.equal(fee);
@@ -58,8 +57,8 @@ describe('Fee Helper Test', function () {
   });
 
   describe('test ETH coin', async () => {
-    it('should set fee token', async () => {
-      await feeHelper.SetFeeToken(ZERO_ADDRESS);
+    it('should set fee token and amount', async () => {
+      await feeHelper.setFee(ZERO_ADDRESS, fee);
       const feeToken = await feeHelper.FeeToken();
       const actualFee = await feeHelper.FeeAmount();
       expect(actualFee).to.be.equal(fee);
@@ -94,7 +93,7 @@ describe('Fee Helper Test', function () {
 
     it("should set whitelist address", async () => {
       const oldWhiteList = await feeHelper.WhiteListAddress()
-      await feeHelper.setWhiteListAddress(Whitelist.address)
+      await feeHelper.setWhiteList(Whitelist.address, 0)
       const whiteList = await feeHelper.WhiteListAddress()
       expect(whiteList).to.be.equal(Whitelist.address)
       expect(whiteList).to.not.equal(oldWhiteList)
@@ -110,7 +109,7 @@ describe('Fee Helper Test', function () {
     it("should set whitelist id", async () => {
       const oldWhiteListId = await feeHelper.WhiteListId()
       const newwhiteListId = 1
-      await feeHelper.setWhiteListId(newwhiteListId)
+      await feeHelper.setWhiteList(Whitelist.address, newwhiteListId)
       const whiteListId = await feeHelper.WhiteListId()
       expect(whiteListId).to.be.equal(newwhiteListId)
       expect(whiteListId).to.not.equal(oldWhiteListId)
@@ -124,7 +123,7 @@ describe('Fee Helper Test', function () {
     })
 
     it("should take full fee when user has not credits", async () => {
-      await feeHelper.SetFeeToken(token.address);
+      await feeHelper.setFee(token.address, fee);
       await Whitelist.setCredits(payer.address, 0)
       const beforePayerBalance = await token.balanceOf(payer.address);
       await token.connect(payer).approve(feeHelper.address, fee);
@@ -136,7 +135,7 @@ describe('Fee Helper Test', function () {
     })
 
     it("should not take fee when user has credits", async () => {
-      await feeHelper.SetFeeToken(token.address);
+      await feeHelper.setFee(token.address, fee);
       const credits = fee * 5;
       await Whitelist.setCredits(payer.address, credits)
       const beforePayerBalance = await token.balanceOf(payer.address);
@@ -148,7 +147,7 @@ describe('Fee Helper Test', function () {
     })
 
     it("should take partial fee when user has less credits than fee", async () => {
-      await feeHelper.SetFeeToken(token.address);
+      await feeHelper.setFee(token.address, fee);
       const credits = fee / 2;
       await Whitelist.setCredits(payer.address, credits)
       const beforePayerBalance = await token.balanceOf(payer.address);
