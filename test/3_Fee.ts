@@ -117,7 +117,7 @@ describe('Fee Helper Test', function () {
     })
 
     it("should return correct credits", async () => {
-      let credits: number = fee * 5;
+      const credits: number = fee * 5;
       await Whitelist.setCredits(payer.address, credits)
       const _credits = await feeHelper.getCredits(payer.address);
       expect(credits).to.be.equal(_credits);
