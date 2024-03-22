@@ -76,4 +76,25 @@ describe('Fee Helper Test', function () {
       expect(actualBal).to.be.equal(oldBal.add(fee));
     });
   });
+
+  describe("Whitelist Settings", async () => {
+    it("should set whitelist address", async () => {
+      const oldWhiteList = await feeHelper.WhiteListAddress()
+      const newWhiteList = (await ethers.getSigners()).at(-1) as SignerWithAddress;
+      await feeHelper.setWhiteListAddress(newWhiteList.address)
+      const whiteList = await feeHelper.WhiteListAddress()
+      expect(whiteList).to.be.equal(newWhiteList.address)
+      expect(whiteList).to.not.equal(oldWhiteList)
+      await feeHelper.setWhiteListAddress(oldWhiteList)
+    })
+
+    it("should set whitelist id", async () => {
+      const oldWhiteListId = await feeHelper.WhiteListId()
+      const newwhiteListId = 5
+      await feeHelper.setWhiteListId(newwhiteListId)
+      const whiteListId = await feeHelper.WhiteListId()
+      expect(whiteListId).to.be.equal(newwhiteListId)
+      expect(whiteListId).to.not.equal(oldWhiteListId)
+    })
+  })
 });

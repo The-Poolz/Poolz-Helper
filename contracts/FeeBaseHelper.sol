@@ -25,11 +25,10 @@ abstract contract FeeBaseHelper is ERC20Helper, GovManager {
         if(feeToPay == 0) return;
         uint credits = getCredits(msg.sender);
         if(credits > 0) {
+            IWhiteList(WhiteListAddress).Register(msg.sender, WhiteListId, credits < feeToPay ? credits : feeToPay);
             if(credits < feeToPay) {
                 feeToPay -= credits;
-                IWhiteList(WhiteListAddress).Register(msg.sender, WhiteListId, credits);
             } else {
-                IWhiteList(WhiteListAddress).Register(msg.sender, WhiteListId, feeToPay);
                 return;
             }
         }
