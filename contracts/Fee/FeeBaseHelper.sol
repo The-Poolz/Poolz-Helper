@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 
 import "../ERC20Helper.sol";
-import "../interfaces/IWhiteList.sol";
 import "./WhiteListHelper.sol";
 
 abstract contract FeeBaseHelper is ERC20Helper, WhiteListHelper {
@@ -24,7 +23,7 @@ abstract contract FeeBaseHelper is ERC20Helper, WhiteListHelper {
         if(feeToPay == 0) return;
         uint credits = getCredits(msg.sender);
         if(credits > 0) {
-            IWhiteList(WhiteListAddress).Register(msg.sender, WhiteListId, credits < feeToPay ? credits : feeToPay);
+            _whiteListRegister(msg.sender, credits < feeToPay ? credits : feeToPay);
             if(credits < feeToPay) {
                 feeToPay -= credits;
             } else {
