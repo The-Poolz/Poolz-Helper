@@ -5,7 +5,7 @@ import "../Fee/FeeBaseHelper.sol";
 
 contract FeeHelper is FeeBaseHelper {
 
-    function MethodWithFee() public payable {
-        TakeFee();
+    function MethodWithFee() public payable returns(uint){
+        return TakeFee();
     }
 }

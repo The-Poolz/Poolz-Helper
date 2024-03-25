@@ -18,16 +18,16 @@ abstract contract FeeBaseHelper is ERC20Helper, WhiteListHelper {
     
     mapping(address => uint) public FeeReserve;
 
-    function TakeFee() internal virtual firewallProtected {
-        uint feeToPay = FeeAmount;
-        if(feeToPay == 0) return;
+    function TakeFee() internal virtual firewallProtected returns(uint feeToPay){
+        feeToPay = FeeAmount;
+        if(feeToPay == 0) return 0;
         uint credits = getCredits(msg.sender);
         if(credits > 0) {
             _whiteListRegister(msg.sender, credits < feeToPay ? credits : feeToPay);
             if(credits < feeToPay) {
                 feeToPay -= credits;
             } else {
-                return;
+                return 0;
             }
         }
         _TakeFee(feeToPay);

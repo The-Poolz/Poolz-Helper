@@ -24,12 +24,14 @@ describe('Fee Helper Test', function () {
   it('zero fee', async () => {
     const gasPrice = 2500000000;
     const oldBal = await payer.getBalance();
+    const feePaid = await feeHelper.connect(payer).callStatic.MethodWithFee({ gasPrice: gasPrice });
     const tx = await feeHelper.connect(payer).MethodWithFee({ gasPrice: gasPrice });
     const txReceipt = await tx.wait();
     const actualBal = await payer.getBalance();
     const gas = txReceipt.gasUsed.mul(gasPrice);
     const expectedBal = oldBal.sub(gas);
     expect(actualBal).to.be.equal(expectedBal);
+    expect(feePaid).to.be.equal(0);
   });
 
   describe('test ERC20 token', async () => {
@@ -44,9 +46,11 @@ describe('Fee Helper Test', function () {
     it('should pay', async () => {
       await token.connect(payer).approve(feeHelper.address, fee);
       const oldBal = await token.balanceOf(feeHelper.address);
+      const feePaid = await feeHelper.connect(payer).callStatic.MethodWithFee();
       await feeHelper.connect(payer).MethodWithFee();
       const actualBal = await token.balanceOf(feeHelper.address);
       expect(actualBal).to.be.equal(oldBal.add(fee));
+      expect(feePaid).to.be.equal(fee);
     });
 
     it('should withdraw', async () => {
@@ -67,9 +71,11 @@ describe('Fee Helper Test', function () {
 
     it('should pay', async () => {
       const oldBal = await ethers.provider.getBalance(feeHelper.address);
+      const feePaid = await feeHelper.connect(payer).callStatic.MethodWithFee({ value: fee });
       await feeHelper.connect(payer).MethodWithFee({ value: fee });
       const actualBal = await ethers.provider.getBalance(feeHelper.address);
       expect(actualBal).to.be.equal(oldBal.add(fee));
+      expect(feePaid).to.be.equal(fee);
     });
 
     it("should revert when fee is not paid", async () => {
@@ -116,10 +122,12 @@ describe('Fee Helper Test', function () {
       await feeHelper.addUsers([payer.address], [0])
       const beforePayerBalance = await token.balanceOf(payer.address);
       await token.connect(payer).approve(feeHelper.address, fee);
+      const feePaid = await feeHelper.connect(payer).callStatic.MethodWithFee();
       const tx = await feeHelper.connect(payer).MethodWithFee();
       const afterPayerBalance = await token.balanceOf(payer.address);
       expect(beforePayerBalance.sub(afterPayerBalance)).to.be.equal(fee);
       expect(await feeHelper.FeeToken()).to.be.equal(token.address);
+      expect(feePaid).to.be.equal(fee);
       await expect(tx).to.emit(feeHelper, "TransferIn").withArgs(fee, payer.address, token.address);
     })
 
@@ -128,10 +136,12 @@ describe('Fee Helper Test', function () {
       const credits = fee * 5;
       await feeHelper.addUsers([payer.address], [credits])
       const beforePayerBalance = await token.balanceOf(payer.address);
+      const feePaid = await feeHelper.connect(payer).callStatic.MethodWithFee();
       const tx = await feeHelper.connect(payer).MethodWithFee();
       const afterPayerBalance = await token.balanceOf(payer.address);
       expect(beforePayerBalance).to.be.equal(afterPayerBalance);
       expect(await feeHelper.FeeToken()).to.be.equal(token.address);
+      expect(feePaid).to.be.equal(0);
       await expect(tx).to.not.emit(feeHelper, "TransferIn");
     })
 
@@ -141,10 +151,12 @@ describe('Fee Helper Test', function () {
       await feeHelper.addUsers([payer.address], [credits])
       const beforePayerBalance = await token.balanceOf(payer.address);
       await token.connect(payer).approve(feeHelper.address, fee - credits);
+      const feePaid = await feeHelper.connect(payer).callStatic.MethodWithFee();
       const tx = await feeHelper.connect(payer).MethodWithFee();
       const afterPayerBalance = await token.balanceOf(payer.address);
       expect(beforePayerBalance.sub(afterPayerBalance)).to.be.equal(fee - credits);
       expect(await feeHelper.FeeToken()).to.be.equal(token.address);
+      expect(feePaid).to.be.equal(fee - credits);
       await expect(tx).to.emit(feeHelper, "TransferIn").withArgs(fee - credits, payer.address, token.address);
     })
 
