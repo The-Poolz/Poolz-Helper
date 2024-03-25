@@ -93,38 +93,27 @@ describe('Fee Helper Test', function () {
 
     it("should set whitelist address", async () => {
       const oldWhiteList = await feeHelper.WhiteListAddress()
-      await feeHelper.setWhiteList(Whitelist.address, 0)
+      await feeHelper.setupNewWhitelist(Whitelist.address)
       const whiteList = await feeHelper.WhiteListAddress()
+      const whiteListId = await feeHelper.WhiteListId()
       expect(whiteList).to.be.equal(Whitelist.address)
       expect(whiteList).to.not.equal(oldWhiteList)
+      expect(whiteListId).to.be.equal(1)
     })
 
-    it("should get 0 credits when WhiteList is not set", async () => {
-      const whitelistAddress = await feeHelper.WhiteListAddress()
-      const credits = await feeHelper.getCredits(payer.address);
-      expect(whitelistAddress).to.be.equal(Whitelist.address)
-      expect(credits).to.be.equal(0);
-    })
-
-    it("should set whitelist id", async () => {
-      const oldWhiteListId = await feeHelper.WhiteListId()
-      const newwhiteListId = 1
-      await feeHelper.setWhiteList(Whitelist.address, newwhiteListId)
-      const whiteListId = await feeHelper.WhiteListId()
-      expect(whiteListId).to.be.equal(newwhiteListId)
-      expect(whiteListId).to.not.equal(oldWhiteListId)
-    })
-
-    it("should return correct credits", async () => {
+    it("should add and remove new users", async () => {
       const credits: number = fee * 5;
-      await Whitelist.setCredits(payer.address, credits)
+      await feeHelper.addUsers([payer.address], [credits])
       const _credits = await feeHelper.getCredits(payer.address);
       expect(credits).to.be.equal(_credits);
+      await feeHelper.removeUsers([payer.address])
+      const _credits2 = await feeHelper.getCredits(payer.address);
+      expect(0).to.be.equal(_credits2);
     })
 
     it("should take full fee when user has not credits", async () => {
       await feeHelper.setFee(token.address, fee);
-      await Whitelist.setCredits(payer.address, 0)
+      await feeHelper.addUsers([payer.address], [0])
       const beforePayerBalance = await token.balanceOf(payer.address);
       await token.connect(payer).approve(feeHelper.address, fee);
       const tx = await feeHelper.connect(payer).MethodWithFee();
@@ -137,7 +126,7 @@ describe('Fee Helper Test', function () {
     it("should not take fee when user has credits", async () => {
       await feeHelper.setFee(token.address, fee);
       const credits = fee * 5;
-      await Whitelist.setCredits(payer.address, credits)
+      await feeHelper.addUsers([payer.address], [credits])
       const beforePayerBalance = await token.balanceOf(payer.address);
       const tx = await feeHelper.connect(payer).MethodWithFee();
       const afterPayerBalance = await token.balanceOf(payer.address);
@@ -149,7 +138,7 @@ describe('Fee Helper Test', function () {
     it("should take partial fee when user has less credits than fee", async () => {
       await feeHelper.setFee(token.address, fee);
       const credits = fee / 2;
-      await Whitelist.setCredits(payer.address, credits)
+      await feeHelper.addUsers([payer.address], [credits])
       const beforePayerBalance = await token.balanceOf(payer.address);
       await token.connect(payer).approve(feeHelper.address, fee - credits);
       const tx = await feeHelper.connect(payer).MethodWithFee();
