@@ -51,12 +51,13 @@ abstract contract FeeBaseHelper is ERC20Helper, WhiteListHelper {
 
     function WithdrawFee(address _token, address _to) external firewallProtected onlyOwnerOrGov {
         if (FeeReserve[_token] == 0) revert FeeAmountIsZero();
+        uint feeAmount = FeeReserve[_token];
+        FeeReserve[_token] = 0;
         if (_token == address(0)) {
-            (bool success, ) = _to.call{value: FeeReserve[_token]}("");
+            (bool success, ) = _to.call{value: feeAmount}("");
             if (!success) revert TransferFailed();
         } else {
-            TransferToken(_token, _to, FeeReserve[_token]);
+            TransferToken(_token, _to, feeAmount);
         }
-        FeeReserve[_token] = 0;
     }
 }
