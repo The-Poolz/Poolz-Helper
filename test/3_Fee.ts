@@ -1,11 +1,9 @@
-import { BigNumber } from '@ethersproject/bignumber';
 import { ZERO_ADDRESS } from '../scripts/constants';
 import { deployed } from '../scripts/deploy';
 import { ERC20Token, FeeHelper, WhiteListMock } from '../typechain-types';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import exp from 'constants';
 
 describe('Fee Helper Test', function () {
   const fee: number = 100000;
