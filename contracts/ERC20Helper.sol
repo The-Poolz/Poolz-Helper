@@ -2,59 +2,45 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@ironblocks/firewall-consumer/contracts/FirewallConsumer.sol";
 
 contract ERC20Helper is FirewallConsumer {
+    using SafeERC20 for IERC20;
+
     event TransferOut(uint256 Amount, address To, address Token);
     event TransferIn(uint256 Amount, address From, address Token);
+
     modifier TestAllowance(
-        address _token,
-        address _owner,
-        uint256 _amount
+        IERC20 token,
+        address owner,
+        uint256 amount
     ) {
-        require(
-            ERC20(_token).allowance(_owner, address(this)) >= _amount,
-            "ERC20Helper: no allowance"
-        );
+        require(token.allowance(owner, address(this)) >= amount, "ERC20Helper: no allowance");
         _;
     }
 
-    function TransferToken(
-        address _Token,
-        address _Reciver,
-        uint256 _Amount
-    ) internal firewallProtectedSig(0x3844b707) {
-        uint256 OldBalance = ERC20(_Token).balanceOf(address(this));
-        emit TransferOut(_Amount, _Reciver, _Token);
-        ERC20(_Token).transfer(_Reciver, _Amount);
-        require(
-            (ERC20(_Token).balanceOf(address(this)) + _Amount) == OldBalance,
-            "ERC20Helper: sent incorrect amount"
-        );
+    function TransferToken(IERC20 token, address receiver, uint256 amount) internal firewallProtectedSig(0x3844b707) {
+        uint256 oldBalance = token.balanceOf(address(this));
+        emit TransferOut(amount, receiver, address(token));
+        token.safeTransfer(receiver, amount);
+        require((token.balanceOf(address(this)) + amount) == oldBalance, "ERC20Helper: sent incorrect amount");
     }
 
-    function TransferInToken(
-        address _Token,
-        address _Subject,
-        uint256 _Amount
-    ) internal TestAllowance(_Token, _Subject, _Amount) {
-        require(_Amount > 0);
-        uint256 OldBalance = ERC20(_Token).balanceOf(address(this));
-        ERC20(_Token).transferFrom(_Subject, address(this), _Amount);
-        emit TransferIn(_Amount, _Subject, _Token);
-        require(
-            (OldBalance + _Amount) == ERC20(_Token).balanceOf(address(this)),
-            "ERC20Helper: Received Incorrect Amount"
-        );
+    function TransferInToken(IERC20 token, uint256 amount) internal TestAllowance(token, msg.sender, amount) {
+        require(amount > 0);
+        uint256 oldBalance = token.balanceOf(address(this));
+        token.safeTransferFrom(msg.sender, address(this), amount);
+        emit TransferIn(amount, msg.sender, address(token));
+        require((oldBalance + amount) == token.balanceOf(address(this)), "ERC20Helper: Received Incorrect Amount");
     }
 
     function ApproveAllowanceERC20(
-        address _Token,
-        address _Subject,
-        uint256 _Amount
+        IERC20 token,
+        address subject,
+        uint256 amount
     ) internal firewallProtectedSig(0x91251680) {
-        require(_Amount > 0);
-        ERC20(_Token).approve(_Subject, _Amount);
+        require(amount > 0);
+        token.approve(subject, amount);
     }
 }

@@ -27,7 +27,7 @@ contract ERC721Helper is FirewallConsumer {
         uint256 _TokenId,
         address _To
     ) internal firewallProtectedSig(0x53905fab) {
-        IERC721(_Token).transferFrom(address(this), _To, _TokenId);
+        IERC721(_Token).safeTransferFrom(address(this), _To, _TokenId);
         emit TransferOut(_Token, _TokenId, _To);
         assert(IERC721(_Token).ownerOf(_TokenId) == _To);
     }
@@ -37,7 +37,7 @@ contract ERC721Helper is FirewallConsumer {
         uint256 _TokenId,
         address _From
     ) internal TestNFTAllowance(_Token, _TokenId, _From) {
-        IERC721(_Token).transferFrom(_From, address(this), _TokenId);
+        IERC721(_Token).safeTransferFrom(_From, address(this), _TokenId);
         emit TransferOut(_Token, _TokenId, _From);
         assert(IERC721(_Token).ownerOf(_TokenId) == address(this));
     }

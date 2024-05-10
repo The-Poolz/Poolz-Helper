@@ -18,13 +18,13 @@ abstract contract FeeBaseHelper is ERC20Helper, WhiteListHelper {
     
     mapping(address => uint) public FeeReserve;
 
-    function TakeFee() internal virtual firewallProtected returns(uint feeToPay){
+    function TakeFee() internal virtual firewallProtected returns (uint feeToPay) {
         feeToPay = FeeAmount;
-        if(feeToPay == 0) return 0;
+        if (feeToPay == 0) return 0;
         uint credits = getCredits(msg.sender);
-        if(credits > 0) {
+        if (credits > 0) {
             _whiteListRegister(msg.sender, credits < feeToPay ? credits : feeToPay);
-            if(credits < feeToPay) {
+            if (credits < feeToPay) {
                 feeToPay -= credits;
             } else {
                 return 0;
@@ -34,12 +34,12 @@ abstract contract FeeBaseHelper is ERC20Helper, WhiteListHelper {
     }
 
     function _TakeFee(uint _fee) private {
-        address _feeToken = FeeToken;   // cache storage reads
+        address _feeToken = FeeToken; // cache storage reads
         if (_feeToken == address(0)) {
             if (msg.value < _fee) revert NotEnoughFeeProvided();
             emit TransferInETH(msg.value, msg.sender);
         } else {
-            TransferInToken(_feeToken, msg.sender, _fee);
+            TransferInToken(IERC20(_feeToken), _fee);
         }
         FeeReserve[_feeToken] += _fee;
     }
@@ -57,7 +57,7 @@ abstract contract FeeBaseHelper is ERC20Helper, WhiteListHelper {
             (bool success, ) = _to.call{value: feeAmount}("");
             if (!success) revert TransferFailed();
         } else {
-            TransferToken(_token, _to, feeAmount);
+            TransferToken(IERC20(_token), _to, feeAmount);
         }
     }
 }
