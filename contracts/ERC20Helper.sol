@@ -33,7 +33,7 @@ contract ERC20Helper is FirewallConsumer {
         uint256 OldBalance = ERC20(_Token).balanceOf(address(this));
         emit TransferOut(_Amount, _Reciver, _Token);
         ERC20(_Token).transfer(_Reciver, _Amount);
-        if ((ERC20(_Token).balanceOf(address(this)) + _Amount) != OldBalance) revert SentIncorrectAmount();
+        if (ERC20(_Token).balanceOf(address(this)) == (OldBalance + _Amount)) revert SentIncorrectAmount();
     }
 
     function TransferInToken(
@@ -45,7 +45,7 @@ contract ERC20Helper is FirewallConsumer {
         uint256 OldBalance = ERC20(_Token).balanceOf(address(this));
         ERC20(_Token).transferFrom(_Subject, address(this), _Amount);
         emit TransferIn(_Amount, _Subject, _Token);
-        if ((ERC20(_Token).balanceOf(address(this)) + _Amount) != OldBalance) revert ReceivedIncorrectAmount();
+        if (ERC20(_Token).balanceOf(address(this)) != (OldBalance + _Amount)) revert ReceivedIncorrectAmount();
     }
 
     function ApproveAllowanceERC20(
