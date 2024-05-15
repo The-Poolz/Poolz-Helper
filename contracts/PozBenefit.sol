@@ -6,15 +6,15 @@ import "./GovManager.sol";
 
 contract PozBenefit is GovManager {
     constructor() {
-        PozFee = 15; // *10000
-        PozTimer = 1000; // *10000
+        pozFee = 15; // *10000
+        pozTimer = 1000; // *10000
 
         // POZ_Address = address(0x0);
         // POZBenefit_Address = address(0x0);
     }
 
-    uint256 public PozFee; // the fee for the first part of the pool
-    uint256 public PozTimer; //the timer for the first part fo the pool
+    uint256 public pozFee; // the fee for the first part of the pool
+    uint256 public pozTimer; //the timer for the first part fo the pool
 
     modifier PercentCheckOk(uint256 _percent) {
         if (_percent < 10000) _;
@@ -25,11 +25,7 @@ contract PozBenefit is GovManager {
         else revert("Not bigger");
     }
 
-    function SetPozTimer(uint256 _pozTimer)
-        public
-        onlyOwnerOrGov
-        PercentCheckOk(_pozTimer)
-    {
-        PozTimer = _pozTimer;
+    function setPozTimer(uint256 _pozTimer) public onlyOwnerOrGov PercentCheckOk(_pozTimer) {
+        pozTimer = _pozTimer;
     }
 }
