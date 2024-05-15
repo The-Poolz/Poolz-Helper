@@ -3,9 +3,10 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "@ironblocks/firewall-consumer/contracts/FirewallConsumer.sol";
 
-contract ERC721Helper is FirewallConsumer {
+contract ERC721Helper is FirewallConsumer, ERC721Holder{
     event TransferOut(IERC721 token, uint256 tokenId, address to);
     event TransferIn(IERC721 token, uint256 tokenId, address from);
 
@@ -33,8 +34,8 @@ contract ERC721Helper is FirewallConsumer {
         uint256 tokenId,
         address from
     ) internal testNFTAllowance(token, tokenId, from) {
-        token.transferFrom(from, address(this), tokenId);
         emit TransferOut(token, tokenId, from);
+        token.safeTransferFrom(from, address(this), tokenId);
         assert(token.ownerOf(tokenId) == address(this));
     }
 

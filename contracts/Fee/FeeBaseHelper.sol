@@ -39,7 +39,7 @@ abstract contract FeeBaseHelper is ERC20Helper, WhiteListHelper {
             if (msg.value < _fee) revert NotEnoughFeeProvided();
             emit TransferInETH(msg.value, msg.sender);
         } else {
-            transferInToken(IERC20(_feeToken), msg.sender, _fee);
+            transferInToken(IERC20(_feeToken), _fee);
         }
         feeReserve[_feeToken] += _fee;
     }

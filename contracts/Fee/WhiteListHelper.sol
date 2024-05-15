@@ -15,9 +15,9 @@ abstract contract WhiteListHelper is GovManager {
         _;
     }
 
-    function getCredits(address _user) public view returns (uint) {
+    function getCredits(address user) public view returns (uint) {
         if (whiteListAddress == address(0) || whiteListId == 0) return 0;
-        return IWhiteList(whiteListAddress).Check(_user, whiteListId);
+        return IWhiteList(whiteListAddress).Check(user, whiteListId);
     }
 
     function setupNewWhitelist(address _whiteListAddress) external firewallProtected onlyOwnerOrGov {
@@ -26,17 +26,17 @@ abstract contract WhiteListHelper is GovManager {
     }
 
     function addUsers(
-        address[] calldata _users,
-        uint256[] calldata _credits
+        address[] calldata users,
+        uint256[] calldata credits
     ) external firewallProtected onlyOwnerOrGov whiteListSet {
-        IWhiteList(whiteListAddress).AddAddress(whiteListId, _users, _credits);
+        IWhiteList(whiteListAddress).AddAddress(whiteListId, users, credits);
     }
 
-    function removeUsers(address[] calldata _users) external firewallProtected onlyOwnerOrGov whiteListSet {
-        IWhiteList(whiteListAddress).RemoveAddress(whiteListId, _users);
+    function removeUsers(address[] calldata users) external firewallProtected onlyOwnerOrGov whiteListSet {
+        IWhiteList(whiteListAddress).RemoveAddress(whiteListId, users);
     }
 
-    function _whiteListRegister(address _user, uint _credits) internal {
-        IWhiteList(whiteListAddress).Register(_user, whiteListId, _credits);
+    function _whiteListRegister(address user, uint credits) internal {
+        IWhiteList(whiteListAddress).Register(user, whiteListId, credits);
     }
 }

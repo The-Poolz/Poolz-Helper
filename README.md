@@ -65,12 +65,11 @@ This function transfers a specified amount of an ERC20 token to a recipient addr
 
 ### TransferInToken
 ```solidity
-function TransferInToken(address _Token, address _Subject, uint256 _Amount) internal TestAllownce(_Token, _Subject, _Amount)
+function TransferInToken(address _Token, uint256 _Amount) internal TestAllownce(_Token, msg.sender, _Amount)
 ```
 This function transfers a specified amount of an ERC20 token to the contract from the specified subject. It first checks if the contract has sufficient allowance to perform the transfer using the TestAllownce modifier, and then emits the TransferIn event to indicate that the transfer has taken place.
 #### Parameters
 - **address _Token:** The address of the ERC20 token to be transferred.
-- **address _Subject:** The address of the subject of the tokens.
 - **uint256 _Amount:** The amount of tokens to be transferred.
 
 #### Modifiers

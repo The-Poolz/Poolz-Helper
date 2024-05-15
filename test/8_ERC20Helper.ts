@@ -21,12 +21,12 @@ describe('ERC20 Helper tests', function () {
   });
 
   beforeEach(async () => {
-    await erc20Helper.mockTransferInToken(token.address, owner.address, amount);
+    await erc20Helper.mockTransferInToken(token.address, amount);
     contractBalance = await token.balanceOf(erc20Helper.address);
   });
 
   it('should send tokens to contract', async () => {
-    await erc20Helper.mockTransferInToken(token.address, owner.address, amount);
+    await erc20Helper.mockTransferInToken(token.address, amount);
     const balance = await token.balanceOf(erc20Helper.address);
     expect(contractBalance.add(amount)).to.equal(balance);
   });
@@ -44,13 +44,14 @@ describe('ERC20 Helper tests', function () {
   });
 
   it('should revert invalid approved amount', async () => {
-    await expect(
-      erc20Helper.mockTransferInToken(token.address, owner.address, MAX_UINT256),
-    ).to.be.revertedWithCustomError(erc20Helper, 'NoAllowance');
+    await expect(erc20Helper.mockTransferInToken(token.address, MAX_UINT256)).to.be.revertedWithCustomError(
+      erc20Helper,
+      'NoAllowance',
+    );
   });
 
   it('should revert zero transfer call', async () => {
-    await expect(erc20Helper.mockTransferInToken(token.address, owner.address, '0')).to.be.reverted;
+    await expect(erc20Helper.mockTransferInToken(token.address, '0')).to.be.reverted;
   });
 
   it('should revert zero approve amount', async () => {
