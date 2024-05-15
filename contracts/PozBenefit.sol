@@ -16,7 +16,7 @@ contract PozBenefit is GovManager {
         // POZBenefit_Address = address(0x0);
     }
 
-    uint256 public pozFee; // the fee for the first part of the pool
+    uint256 public immutable pozFee; // the fee for the first part of the pool
     uint256 public pozTimer; //the timer for the first part fo the pool
 
     modifier percentCheckOk(uint256 percent) {

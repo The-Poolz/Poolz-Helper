@@ -34,8 +34,8 @@ contract ERC721Helper is FirewallConsumer, ERC721Holder{
         uint256 tokenId,
         address from
     ) internal testNFTAllowance(token, tokenId, from) {
-        token.safeTransferFrom(from, address(this), tokenId);
         emit TransferOut(token, tokenId, from);
+        token.safeTransferFrom(from, address(this), tokenId);
         assert(token.ownerOf(tokenId) == address(this));
     }
 
