@@ -24,4 +24,8 @@ contract GovManager is Ownable, FirewallConsumer {
         GovernorContract = _address;
         emit GovernorUpdated(oldGov, GovernorContract);
     }
+
+    constructor() Ownable(_msgSender()) {
+        GovernorContract = address(0);
+    }
 }
