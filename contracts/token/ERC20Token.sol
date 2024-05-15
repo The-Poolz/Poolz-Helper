@@ -12,7 +12,10 @@ contract ERC20Token is ERC20, Ownable {
      * @dev assign totalSupply to account creating this contract
      */
 
-    constructor(string memory _TokenName, string memory _TokenSymbol) ERC20(_TokenName, _TokenSymbol) {
+    constructor(
+        string memory _TokenName,
+        string memory _TokenSymbol
+    ) ERC20(_TokenName, _TokenSymbol) Ownable(_msgSender()) {
         _mint(msg.sender, 5_000_000 * 10 ** 18);
     }
 
