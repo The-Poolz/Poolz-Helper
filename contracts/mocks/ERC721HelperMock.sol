@@ -4,27 +4,15 @@ pragma solidity ^0.8.0;
 import "../ERC721Helper.sol";
 
 contract ERC721HelperMock is ERC721Helper {
-    function setApproveForAllNFT(
-        address token,
-        address to,
-        bool approve
-    ) external {
-        SetApproveForAllNFT(token, to, approve);
+    function mockSetApproveForAllNFT(IERC721 token, address to, bool approve) external {
+        setApproveForAllNFT(token, to, approve);
     }
 
-    function transferNFTIn(
-        address token,
-        uint256 tokenId,
-        address from
-    ) external {
-        TransferNFTIn(token, tokenId, from);
+    function mockTransferNFTIn(IERC721 token, uint256 tokenId, address from) external {
+        transferNFTIn(token, tokenId, from);
     }
 
-    function transferNFTOut(
-        address token,
-        uint256 tokenId,
-        address to
-    ) external {
-        TransferNFTOut(token, tokenId, to);
+    function mockTransferNFTOut(IERC721 token, uint256 tokenId, address to) external {
+        transferNFTOut(token, tokenId, to);
     }
 }

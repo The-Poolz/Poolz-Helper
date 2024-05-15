@@ -31,7 +31,7 @@ describe('ERC721 Helper tests', function () {
   });
 
   it('should transfer tokens in contract', async () => {
-    await erc721Helper.transferNFTIn(erc721Token.address, itemId, owner.address);
+    await erc721Helper.mockTransferNFTIn(erc721Token.address, itemId, owner.address);
     const ownerOfNFT = await erc721Token.ownerOf(itemId);
     expect(ownerOfNFT.toString()).to.be.equal(erc721Helper.address);
   });
@@ -39,25 +39,25 @@ describe('ERC721 Helper tests', function () {
   it('should transfer NFT token after approve', async () => {
     await erc721Token.setApprovalForAll(erc721Helper.address, false);
     await erc721Token.approve(erc721Helper.address, itemId);
-    await erc721Helper.transferNFTIn(erc721Token.address, itemId, owner.address);
+    await erc721Helper.mockTransferNFTIn(erc721Token.address, itemId, owner.address);
     const ownerOfNFT = await erc721Token.ownerOf(itemId);
     expect(ownerOfNFT.toString()).to.be.equal(erc721Helper.address);
   });
 
   it('should TransferNFTOut tokens from contract', async () => {
-    await erc721Helper.transferNFTOut(erc721Token.address, itemId - 1, owner.address);
+    await erc721Helper.mockTransferNFTOut(erc721Token.address, itemId - 1, owner.address);
     const ownerOfNFT = await erc721Token.ownerOf(itemId);
     expect(ownerOfNFT.toString()).to.be.equal(owner.address);
   });
 
   it('should setApproveForAllNFT', async () => {
-    await erc721Helper.setApproveForAllNFT(erc721Token.address, user.address, true);
+    await erc721Helper.mockSetApproveForAllNFT(erc721Token.address, user.address, true);
     const status = await erc721Token.isApprovedForAll(erc721Helper.address, user.address);
     expect(status).to.be.equal(true);
   });
 
   it('should return no allowance message', async () => {
-    await expect(erc721Helper.transferNFTIn(erc721Token.address, itemId, user.address)).to.be.revertedWithCustomError(
+    await expect(erc721Helper.mockTransferNFTIn(erc721Token.address, itemId, user.address)).to.be.revertedWithCustomError(
       erc721Helper,
       'NoAllowance',
     );

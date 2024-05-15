@@ -10,22 +10,20 @@ contract GovManager is Ownable, FirewallConsumer {
 
     error AuthorizationError();
 
-    address public GovernorContract;
+    address public governorContract;
 
     modifier onlyOwnerOrGov() {
-        if (msg.sender != owner() && msg.sender != GovernorContract) {
+        if (msg.sender != owner() && msg.sender != governorContract) {
             revert AuthorizationError();
         }
         _;
     }
 
     function setGovernorContract(address _address) external firewallProtected onlyOwnerOrGov {
-        address oldGov = GovernorContract;
-        GovernorContract = _address;
-        emit GovernorUpdated(oldGov, GovernorContract);
+        address oldGov = governorContract;
+        governorContract = _address;
+        emit GovernorUpdated(oldGov, governorContract);
     }
 
-    constructor() Ownable(_msgSender()) {
-        GovernorContract = address(0);
-    }
+    constructor() Ownable(_msgSender()) {}
 }

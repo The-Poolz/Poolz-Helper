@@ -21,40 +21,39 @@ describe('ERC20 Helper tests', function () {
   });
 
   beforeEach(async () => {
-    await erc20Helper.transferInToken(token.address, owner.address, amount);
+    await erc20Helper.mockTransferInToken(token.address, owner.address, amount);
     contractBalance = await token.balanceOf(erc20Helper.address);
   });
 
   it('should send tokens to contract', async () => {
-    await erc20Helper.transferInToken(token.address, owner.address, amount);
+    await erc20Helper.mockTransferInToken(token.address, owner.address, amount);
     const balance = await token.balanceOf(erc20Helper.address);
     expect(contractBalance.add(amount)).to.equal(balance);
   });
 
   it('should send tokens from contract', async () => {
-    await erc20Helper.transferToken(token.address, owner.address, contractBalance);
+    await erc20Helper.mockTransferToken(token.address, owner.address, contractBalance);
     const balance = await token.balanceOf(erc20Helper.address);
     expect('0').to.equal(balance.toString());
   });
 
   it('should approve using tokens', async () => {
-    await erc20Helper.approveAllowanceERC20(token.address, owner.address, contractBalance);
+    await erc20Helper.mockApproveAllowanceERC20(token.address, owner.address, contractBalance);
     const allowance = await token.allowance(erc20Helper.address, owner.address);
     expect(contractBalance.toString()).to.be.equal(allowance.toString());
   });
 
   it('should revert invalid approved amount', async () => {
-    await expect(erc20Helper.transferInToken(token.address, owner.address, MAX_UINT256)).to.be.revertedWithCustomError(
-      erc20Helper,
-      'NoAllowance',
-    );
+    await expect(
+      erc20Helper.mockTransferInToken(token.address, owner.address, MAX_UINT256),
+    ).to.be.revertedWithCustomError(erc20Helper, 'NoAllowance');
   });
 
   it('should revert zero transfer call', async () => {
-    await expect(erc20Helper.transferInToken(token.address, owner.address, '0')).to.be.reverted;
+    await expect(erc20Helper.mockTransferInToken(token.address, owner.address, '0')).to.be.reverted;
   });
 
   it('should revert zero approve amount', async () => {
-    await expect(erc20Helper.approveAllowanceERC20(token.address, owner.address, '0')).to.be.reverted;
+    await expect(erc20Helper.mockApproveAllowanceERC20(token.address, owner.address, '0')).to.be.reverted;
   });
 });
