@@ -6,42 +6,39 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@ironblocks/firewall-consumer/contracts/FirewallConsumer.sol";
 
 contract ERC721Helper is FirewallConsumer {
-    event TransferOut(address Token, uint256 TokenId, address To);
-    event TransferIn(address Token, uint256 TokenId, address From);
+    event TransferOut(IERC721 token, uint256 tokenId, address to);
+    event TransferIn(IERC721 token, uint256 tokenId, address from);
 
     error NoAllowance();
 
     modifier testNFTAllowance(
-        address token,
+        IERC721 token,
         uint256 tokenId,
         address owner
     ) {
-        if (
-            !IERC721(token).isApprovedForAll(owner, address(this)) &&
-            IERC721(token).getApproved(tokenId) != address(this)
-        ) {
+        if (!token.isApprovedForAll(owner, address(this)) && token.getApproved(tokenId) != address(this)) {
             revert NoAllowance();
         }
         _;
     }
 
-    function transferNFTOut(address token, uint256 tokenId, address to) internal firewallProtectedSig(0x53905fab) {
-        IERC721(token).transferFrom(address(this), to, tokenId);
+    function transferNFTOut(IERC721 token, uint256 tokenId, address to) internal firewallProtectedSig(0x53905fab) {
+        token.transferFrom(address(this), to, tokenId);
         emit TransferOut(token, tokenId, to);
-        assert(IERC721(token).ownerOf(tokenId) == to);
+        assert(token.ownerOf(tokenId) == to);
     }
 
     function transferNFTIn(
-        address token,
+        IERC721 token,
         uint256 tokenId,
         address from
     ) internal testNFTAllowance(token, tokenId, from) {
-        IERC721(token).transferFrom(from, address(this), tokenId);
+        token.transferFrom(from, address(this), tokenId);
         emit TransferOut(token, tokenId, from);
-        assert(IERC721(token).ownerOf(tokenId) == address(this));
+        assert(token.ownerOf(tokenId) == address(this));
     }
 
-    function setApproveForAllNFT(address token, address to, bool approve) internal firewallProtectedSig(0xd5ebe78c) {
-        IERC721(token).setApprovalForAll(to, approve);
+    function setApproveForAllNFT(IERC721 token, address to, bool approve) internal firewallProtectedSig(0xd5ebe78c) {
+        token.setApprovalForAll(to, approve);
     }
 }

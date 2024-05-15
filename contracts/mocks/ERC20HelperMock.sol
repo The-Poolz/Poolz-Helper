@@ -6,15 +6,15 @@ import "../ERC20Helper.sol";
 contract ERC20HelperMock is ERC20Helper {
     constructor() ERC20Helper() {}
 
-    function mockTransferToken(address token, address receiver, uint256 amount) external {
+    function mockTransferToken(IERC20 token, address receiver, uint256 amount) external {
         transferToken(token, receiver, amount);
     }
 
-    function mockTransferInToken(address token, address owner, uint256 amount) external {
+    function mockTransferInToken(IERC20 token, address owner, uint256 amount) external {
         transferInToken(token, owner, amount);
     }
 
-    function mockApproveAllowanceERC20(address token, address receiver, uint256 amount) external {
+    function mockApproveAllowanceERC20(IERC20 token, address receiver, uint256 amount) external {
         approveAllowanceERC20(token, receiver, amount);
     }
 }
