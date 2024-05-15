@@ -5,44 +5,36 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@ironblocks/firewall-consumer/contracts/FirewallConsumer.sol";
 
 contract ETHHelper is Ownable, FirewallConsumer {
-    constructor() {
-        IsPayble = false;
-    }
+    constructor() Ownable(msgSender()) {}
 
-    modifier ReceivETH(
+    modifier receivETH(
         uint256 msgValue,
         address msgSender,
-        uint256 _MinETHInvest
+        uint256 minETHInvest
     ) {
-        require(msgValue >= _MinETHInvest, "Send ETH to invest");
+        require(msgValue >= minETHInvest, "Send ETH to invest");
         emit TransferInETH(msgValue, msgSender);
         _;
     }
 
     //@dev not/allow contract to receive funds
     receive() external payable {
-        if (!IsPayble) revert();
+        if (!isPayble) revert();
     }
 
-    event TransferOutETH(uint256 Amount, address To);
-    event TransferInETH(uint256 Amount, address From);
+    event TransferOutETH(uint256 amount, address to);
+    event TransferInETH(uint256 amount, address from);
 
-    bool public IsPayble;
+    bool public isPayble;
 
-    function SwitchIsPayble() public onlyOwner {
-        IsPayble = !IsPayble;
+    function switchIsPayble() public onlyOwner {
+        isPayble = !isPayble;
     }
 
-    function TransferETH(address payable _Reciver, uint256 _amount)
-        internal
-        firewallProtectedSig(0xfd69c215)
-    {
+    function TransferETH(address payable _Reciver, uint256 _amount) internal firewallProtectedSig(0xfd69c215) {
         emit TransferOutETH(_amount, _Reciver);
         uint256 beforeBalance = address(_Reciver).balance;
         _Reciver.transfer(_amount);
-        require(
-            (beforeBalance + _amount) == address(_Reciver).balance,
-            "The transfer did not complite"
-        );
+        require((beforeBalance + _amount) == address(_Reciver).balance, "The transfer did not complite");
     }
 }

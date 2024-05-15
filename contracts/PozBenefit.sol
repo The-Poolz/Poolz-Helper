@@ -16,12 +16,13 @@ contract PozBenefit is GovManager {
     uint256 public pozFee; // the fee for the first part of the pool
     uint256 public pozTimer; //the timer for the first part fo the pool
 
-    modifier PercentCheckOk(uint256 _percent) {
-        if (_percent < 10000) _;
+    modifier percentCheckOk(uint256 percent) {
+        if (percent < 10000) _;
         else revert("Not in range");
     }
-    modifier LeftIsBigger(uint256 _left, uint256 _right) {
-        if (_left > _right) _;
+
+    modifier leftIsBigger(uint256 left, uint256 right) {
+        if (left > right) _;
         else revert("Not bigger");
     }
 

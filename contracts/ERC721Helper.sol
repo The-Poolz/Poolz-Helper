@@ -9,44 +9,36 @@ contract ERC721Helper is FirewallConsumer {
     event TransferOut(address Token, uint256 TokenId, address To);
     event TransferIn(address Token, uint256 TokenId, address From);
 
-    modifier TestNFTAllowance(
-        address _token,
-        uint256 _tokenId,
-        address _owner
+    modifier testNFTAllowance(
+        address token,
+        uint256 tokenId,
+        address owner
     ) {
         require(
-            IERC721(_token).isApprovedForAll(_owner, address(this)) ||
-                IERC721(_token).getApproved(_tokenId) == address(this),
+            IERC721(token).isApprovedForAll(owner, address(this)) ||
+                IERC721(token).getApproved(tokenId) == address(this),
             "No Allowance"
         );
         _;
     }
 
-    function TransferNFTOut(
-        address _Token,
-        uint256 _TokenId,
-        address _To
-    ) internal firewallProtectedSig(0x53905fab) {
-        IERC721(_Token).transferFrom(address(this), _To, _TokenId);
-        emit TransferOut(_Token, _TokenId, _To);
-        assert(IERC721(_Token).ownerOf(_TokenId) == _To);
+    function transferNFTOut(address token, uint256 tokenId, address to) internal firewallProtectedSig(0x53905fab) {
+        IERC721(token).transferFrom(address(this), to, tokenId);
+        emit TransferOut(token, tokenId, to);
+        assert(IERC721(token).ownerOf(tokenId) == to);
     }
 
-    function TransferNFTIn(
-        address _Token,
-        uint256 _TokenId,
-        address _From
-    ) internal TestNFTAllowance(_Token, _TokenId, _From) {
-        IERC721(_Token).transferFrom(_From, address(this), _TokenId);
-        emit TransferOut(_Token, _TokenId, _From);
-        assert(IERC721(_Token).ownerOf(_TokenId) == address(this));
+    function transferNFTIn(
+        address token,
+        uint256 tokenId,
+        address from
+    ) internal TestNFTAllowance(token, tokenId, from) {
+        IERC721(token).transferFrom(from, address(this), tokenId);
+        emit TransferOut(token, tokenId, from);
+        assert(IERC721(token).ownerOf(tokenId) == address(this));
     }
 
-    function SetApproveForAllNFT(
-        address _Token,
-        address _To,
-        bool _Approve
-    ) internal firewallProtectedSig(0xd5ebe78c) {
-        IERC721(_Token).setApprovalForAll(_To, _Approve);
+    function setApproveForAllNFT(address token, address to, bool approve) internal firewallProtectedSig(0xd5ebe78c) {
+        IERC721(token).setApprovalForAll(to, approve);
     }
 }
