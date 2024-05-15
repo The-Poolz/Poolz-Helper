@@ -57,8 +57,9 @@ describe('ERC721 Helper tests', function () {
   });
 
   it('should return no allowance message', async () => {
-    await expect(erc721Helper.transferNFTIn(erc721Token.address, itemId, user.address)).to.be.revertedWith(
-      'No Allowance',
+    await expect(erc721Helper.transferNFTIn(erc721Token.address, itemId, user.address)).to.be.revertedWithCustomError(
+      erc721Helper,
+      'NoAllowance',
     );
   });
 });

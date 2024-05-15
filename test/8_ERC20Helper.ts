@@ -44,8 +44,9 @@ describe('ERC20 Helper tests', function () {
   });
 
   it('should revert invalid approved amount', async () => {
-    await expect(erc20Helper.transferInToken(token.address, MAX_UINT256)).to.be.revertedWith(
-      'ERC20Helper: no allowance',
+    await expect(erc20Helper.transferInToken(token.address, MAX_UINT256)).to.be.revertedWithCustomError(
+      erc20Helper,
+      'NoAllowance',
     );
   });
 

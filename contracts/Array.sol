@@ -4,6 +4,9 @@ pragma solidity ^0.8.0;
 
 /// @title contains array utility functions
 library Array {
+    error InvalidArrayLength(uint256 _arrLength, uint256 _n);
+    error ZeroArrayLength();
+    
     /// @dev returns a new slice of the array
     function KeepNElementsInArray(uint256[] memory _arr, uint256 _n)
         internal
@@ -11,7 +14,7 @@ library Array {
         returns (uint256[] memory newArray)
     {
         if (_arr.length == _n) return _arr;
-        require(_arr.length > _n, "can't cut more then got");
+        if (_arr.length <= _n) revert InvalidArrayLength(_arr.length, _n);
         newArray = new uint256[](_n);
         for (uint256 i = 0; i < _n; ++i) {
             newArray[i] = _arr[i];
@@ -25,7 +28,7 @@ library Array {
         returns (address[] memory newArray)
     {
         if (_arr.length == _n) return _arr;
-        require(_arr.length > _n, "can't cut more then got");
+        if (_arr.length <= _n) revert InvalidArrayLength(_arr.length, _n);
         newArray = new address[](_n);
         for (uint256 i = 0; i < _n; ++i) {
             newArray[i] = _arr[i];
@@ -39,7 +42,7 @@ library Array {
         pure
         returns (bool)
     {
-        require(_arr.length > 0, "array should be greater than zero");
+        if (_arr.length == 0) revert ZeroArrayLength();
         uint256 temp = _arr[0];
         for (uint256 i = 1; i < _arr.length; ++i) {
             if (temp > _arr[i]) {
