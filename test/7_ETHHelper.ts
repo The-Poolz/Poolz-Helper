@@ -28,8 +28,9 @@ describe('ETH Helper tests', function () {
   });
 
   it('should revert invalid amount eth', async () => {
-    await expect(ethHelper.receiveETH(minETHInvest, { value: minETHInvest / 2 })).to.be.revertedWith(
-      'Send ETH to invest',
+    await expect(ethHelper.receiveETH(minETHInvest, { value: minETHInvest / 2 })).to.be.revertedWithCustomError(
+      ethHelper,
+      'InvalidAmount',
     );
   });
 

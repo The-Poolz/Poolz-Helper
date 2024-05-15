@@ -5,16 +5,17 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@ironblocks/firewall-consumer/contracts/FirewallConsumer.sol";
 
 contract ETHHelper is Ownable, FirewallConsumer {
-    constructor() Ownable(_msgSender()) {
-        IsPayble = false;
-    }
+    error InvalidAmount();
+    error SentIncorrectAmount();
+
+    constructor() Ownable(_msgSender()) {}
 
     modifier ReceivETH(
         uint256 msgValue,
         address msgSender,
         uint256 _MinETHInvest
     ) {
-        require(msgValue >= _MinETHInvest, "Send ETH to invest");
+        if (msgValue < _MinETHInvest) revert InvalidAmount();
         emit TransferInETH(msgValue, msgSender);
         _;
     }
@@ -37,6 +38,6 @@ contract ETHHelper is Ownable, FirewallConsumer {
         emit TransferOutETH(_amount, _Reciver);
         uint256 beforeBalance = address(_Reciver).balance;
         _Reciver.transfer(_amount);
-        require((beforeBalance + _amount) == address(_Reciver).balance, "The transfer did not complite");
+        if ((beforeBalance + _amount) != address(_Reciver).balance) revert SentIncorrectAmount();
     }
 }

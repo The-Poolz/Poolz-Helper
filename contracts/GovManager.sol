@@ -6,18 +6,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@ironblocks/firewall-consumer/contracts/FirewallConsumer.sol";
 
 contract GovManager is Ownable, FirewallConsumer {
-    event GovernorUpdated (
-        address indexed oldGovernor,
-        address indexed newGovernor
-    );
+    event GovernorUpdated(address indexed oldGovernor, address indexed newGovernor);
+
+    error AuthorizationError();
 
     address public GovernorContract;
 
     modifier onlyOwnerOrGov() {
-        require(
-            msg.sender == owner() || msg.sender == GovernorContract,
-            "Authorization Error"
-        );
+        if (msg.sender != owner() && msg.sender != GovernorContract) {
+            revert AuthorizationError();
+        }
         _;
     }
 

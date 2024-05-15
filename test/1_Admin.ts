@@ -61,6 +61,6 @@ describe('Admin Tests', function () {
   it('should fail to set POZ timer when called without invalid address', async () => {
     await pozInstance.setGovernorContract(ZERO_ADDRESS);
     const timer = 1000;
-    await expect(pozInstance.connect(addr).SetPozTimer(timer)).to.be.revertedWith('Authorization Error');
+    await expect(pozInstance.connect(addr).SetPozTimer(timer)).to.be.revertedWithCustomError(pozInstance, "AuthorizationError");
   });
 });
