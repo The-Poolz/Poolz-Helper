@@ -8,6 +8,8 @@ contract ETHHelper is Ownable, FirewallConsumer {
     error InvalidAmount();
     error SentIncorrectAmount();
 
+    constructor() Ownable(_msgSender()) {}
+
     modifier ReceivETH(
         uint256 msgValue,
         address msgSender,
