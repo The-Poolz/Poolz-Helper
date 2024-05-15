@@ -52,6 +52,8 @@ describe('Fee Helper Test', function () {
     });
 
     it('should withdraw', async () => {
+      const fee = await feeHelper.FeeAmount();
+      console.log(fee.toString())
       await feeHelper.WithdrawFee(token.address, payer.address);
       const actualBal = await token.balanceOf(payer.address);
       expect(actualBal).to.be.equal(await token.totalSupply());
