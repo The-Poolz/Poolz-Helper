@@ -6,9 +6,9 @@ import "../ETHHelper.sol";
 contract ETHHelperMock is ETHHelper {
     constructor() ETHHelper() {}
 
-    function receiveETH(uint256 minETHInvest) external payable ReceivETH(msg.value, msg.sender, minETHInvest) {}
+    function receiveETH(uint256 minETHInvest) external payable receivETH(msg.value, msg.sender, minETHInvest) {}
 
-    function transferETH(address payable reciver, uint256 amount) external {
-        TransferETH(reciver, amount);
+    function mockTransferETH(address payable reciver, uint256 amount) external {
+        transferETH(reciver, amount);
     }
 }

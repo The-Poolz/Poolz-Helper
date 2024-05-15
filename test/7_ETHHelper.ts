@@ -19,7 +19,7 @@ describe('ETH Helper tests', function () {
   });
 
   afterEach(async () => {
-    await ethHelper.transferETH(owner.address, minETHInvest);
+    await ethHelper.mockTransferETH(owner.address, minETHInvest);
   });
 
   it('should send eth to the contract', async () => {
