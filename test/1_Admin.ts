@@ -55,12 +55,15 @@ describe('Admin Tests', function () {
 
   it('should fail to set POZ timer when invalid value provided', async () => {
     const timer = 100000;
-    await expect(pozInstance.SetPozTimer(timer)).to.be.revertedWith('Not in range');
+    await expect(pozInstance.SetPozTimer(timer)).to.be.revertedWithCustomError(pozInstance, 'NotInRange');
   });
 
   it('should fail to set POZ timer when called without invalid address', async () => {
     await pozInstance.setGovernorContract(ZERO_ADDRESS);
     const timer = 1000;
-    await expect(pozInstance.connect(addr).SetPozTimer(timer)).to.be.revertedWithCustomError(pozInstance, "AuthorizationError");
+    await expect(pozInstance.connect(addr).SetPozTimer(timer)).to.be.revertedWithCustomError(
+      pozInstance,
+      'AuthorizationError',
+    );
   });
 });
