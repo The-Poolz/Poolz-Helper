@@ -27,19 +27,19 @@ contract ERC20Helper is FirewallConsumer {
         _;
     }
 
-    function TransferToken(IERC20 _Token, address _Reciver, uint256 _Amount) internal firewallProtectedSig(0x3844b707) {
-        uint256 OldBalance = _Token.balanceOf(address(this));
-        emit TransferOut(_Amount, _Reciver, address(_Token));
-        _Token.transfer(_Reciver, _Amount);
-        if (_Token.balanceOf(address(this)) == (OldBalance + _Amount)) revert SentIncorrectAmount();
+    function TransferToken(IERC20 token, address to, uint256 amount) internal firewallProtectedSig(0x3844b707) {
+        uint256 OldBalance = token.balanceOf(address(this));
+        emit TransferOut(amount, msg.sender, address(token));
+        token.safeTransfer(to, amount);
+        if (token.balanceOf(address(this)) == (OldBalance + amount)) revert SentIncorrectAmount();
     }
 
-    function TransferInToken(IERC20 _Token, uint256 _Amount) internal TestAllowance(_Token, msg.sender, _Amount) {
-        if (_Amount == 0) revert ZeroAmount();
-        uint256 OldBalance = _Token.balanceOf(address(this));
-        _Token.transferFrom(msg.sender, address(this), _Amount);
-        emit TransferIn(_Amount, msg.sender, address(_Token));
-        if (_Token.balanceOf(address(this)) != (OldBalance + _Amount)) revert ReceivedIncorrectAmount();
+    function TransferInToken(IERC20 token, uint256 amount) internal TestAllowance(token, msg.sender, amount) {
+        if (amount == 0) revert ZeroAmount();
+        uint256 OldBalance = token.balanceOf(address(this));
+        token.safeTransferFrom(msg.sender, address(this), amount);
+        emit TransferIn(amount, msg.sender, address(token));
+        if (token.balanceOf(address(this)) != (OldBalance + amount)) revert ReceivedIncorrectAmount();
     }
 
     function ApproveAllowanceERC20(
