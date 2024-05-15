@@ -35,8 +35,8 @@ describe('Fee Helper Test', function () {
   describe('test ERC20 token', async () => {
     it('should set fee token and amount', async () => {
       await feeHelper.setFee(token.address, fee);
-      const feeToken = await feeHelper.FeeToken();
-      const actualFee = await feeHelper.FeeAmount();
+      const feeToken = await feeHelper.feeToken();
+      const actualFee = await feeHelper.feeAmount();
       expect(actualFee).to.be.equal(fee);
       expect(feeToken).to.be.equal(token.address);
     });
@@ -52,7 +52,7 @@ describe('Fee Helper Test', function () {
     });
 
     it('should withdraw', async () => {
-      await feeHelper.WithdrawFee(token.address, payer.address);
+      await feeHelper.withdrawFee(token.address, payer.address);
       const actualBal = await token.balanceOf(payer.address);
       expect(actualBal).to.be.equal(await token.totalSupply());
     });
@@ -61,8 +61,8 @@ describe('Fee Helper Test', function () {
   describe('test ETH coin', async () => {
     it('should set fee token and amount', async () => {
       await feeHelper.setFee(ZERO_ADDRESS, fee);
-      const feeToken = await feeHelper.FeeToken();
-      const actualFee = await feeHelper.FeeAmount();
+      const feeToken = await feeHelper.feeToken();
+      const actualFee = await feeHelper.feeAmount();
       expect(actualFee).to.be.equal(fee);
       expect(feeToken).to.be.equal(ZERO_ADDRESS);
     });
@@ -82,7 +82,7 @@ describe('Fee Helper Test', function () {
 
     it('should withdraw', async () => {
       const oldBal = await ethers.provider.getBalance(receiver.address);
-      await feeHelper.WithdrawFee(ZERO_ADDRESS, receiver.address);
+      await feeHelper.withdrawFee(ZERO_ADDRESS, receiver.address);
       const actualBal = await ethers.provider.getBalance(receiver.address);
       expect(actualBal).to.be.equal(oldBal.add(fee));
     });
@@ -96,10 +96,10 @@ describe('Fee Helper Test', function () {
     })
 
     it("should set whitelist address", async () => {
-      const oldWhiteList = await feeHelper.WhiteListAddress()
+      const oldWhiteList = await feeHelper.whiteListAddress()
       await feeHelper.setupNewWhitelist(Whitelist.address)
-      const whiteList = await feeHelper.WhiteListAddress()
-      const whiteListId = await feeHelper.WhiteListId()
+      const whiteList = await feeHelper.whiteListAddress()
+      const whiteListId = await feeHelper.whiteListId()
       expect(whiteList).to.be.equal(Whitelist.address)
       expect(whiteList).to.not.equal(oldWhiteList)
       expect(whiteListId).to.be.equal(1)
@@ -124,7 +124,7 @@ describe('Fee Helper Test', function () {
       const tx = await feeHelper.connect(payer).MethodWithFee();
       const afterPayerBalance = await token.balanceOf(payer.address);
       expect(beforePayerBalance.sub(afterPayerBalance)).to.be.equal(fee);
-      expect(await feeHelper.FeeToken()).to.be.equal(token.address);
+      expect(await feeHelper.feeToken()).to.be.equal(token.address);
       expect(feePaid).to.be.equal(fee);
       await expect(tx).to.emit(feeHelper, "TransferIn").withArgs(fee, payer.address, token.address);
     })
@@ -138,7 +138,7 @@ describe('Fee Helper Test', function () {
       const tx = await feeHelper.connect(payer).MethodWithFee();
       const afterPayerBalance = await token.balanceOf(payer.address);
       expect(beforePayerBalance).to.be.equal(afterPayerBalance);
-      expect(await feeHelper.FeeToken()).to.be.equal(token.address);
+      expect(await feeHelper.feeToken()).to.be.equal(token.address);
       expect(feePaid).to.be.equal(0);
       await expect(tx).to.not.emit(feeHelper, "TransferIn");
     })
@@ -153,7 +153,7 @@ describe('Fee Helper Test', function () {
       const tx = await feeHelper.connect(payer).MethodWithFee();
       const afterPayerBalance = await token.balanceOf(payer.address);
       expect(beforePayerBalance.sub(afterPayerBalance)).to.be.equal(fee - credits);
-      expect(await feeHelper.FeeToken()).to.be.equal(token.address);
+      expect(await feeHelper.feeToken()).to.be.equal(token.address);
       expect(feePaid).to.be.equal(fee - credits);
       await expect(tx).to.emit(feeHelper, "TransferIn").withArgs(fee - credits, payer.address, token.address);
     })

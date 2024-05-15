@@ -26,7 +26,7 @@ contract PozBenefit is GovManager {
         else revert("Not bigger");
     }
 
-    function setPozTimer(uint256 _pozTimer) public onlyOwnerOrGov PercentCheckOk(_pozTimer) {
+    function setPozTimer(uint256 _pozTimer) public onlyOwnerOrGov percentCheckOk(_pozTimer) {
         pozTimer = _pozTimer;
     }
 }

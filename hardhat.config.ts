@@ -6,7 +6,7 @@ import 'solidity-coverage';
 const config: HardhatUserConfig = {
   defaultNetwork: 'hardhat',
   solidity: {
-    version: '0.8.19',
+    version: '0.8.24',
     settings: {
       evmVersion: 'istanbul',
       optimizer: {

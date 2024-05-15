@@ -12,8 +12,8 @@ describe('PausableHelper', function () {
 
   it('should revert invalid user access', async () => {
     const [, addr1] = await ethers.getSigners();
-    await expect(pausableHelper.connect(addr1).pause()).to.be.revertedWith('Authorization Error');
-    await expect(pausableHelper.connect(addr1).unpause()).to.be.revertedWith('Authorization Error');
+    await expect(pausableHelper.connect(addr1).pause()).to.be.revertedWithCustomError(pausableHelper, "AuthorizationError")
+    await expect(pausableHelper.connect(addr1).unpause()).to.be.revertedWithCustomError(pausableHelper, "AuthorizationError");
   });
 
   it('check pause event', async () => {

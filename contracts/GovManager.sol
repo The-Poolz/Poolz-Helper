@@ -8,10 +8,14 @@ import "@ironblocks/firewall-consumer/contracts/FirewallConsumer.sol";
 contract GovManager is Ownable, FirewallConsumer {
     event GovernorUpdated(address indexed oldGovernor, address indexed newGovernor);
 
+    error AuthorizationError();
+
     address public governorContract;
 
     modifier onlyOwnerOrGov() {
-        require(msg.sender == owner() || msg.sender == governorContract, "Authorization Error");
+        if (msg.sender != owner() && msg.sender != governorContract) {
+            revert AuthorizationError();
+        }
         _;
     }
 
@@ -20,4 +24,6 @@ contract GovManager is Ownable, FirewallConsumer {
         governorContract = _address;
         emit GovernorUpdated(oldGov, governorContract);
     }
+
+    constructor() Ownable(_msgSender()) {}
 }

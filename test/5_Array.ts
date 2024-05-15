@@ -23,7 +23,7 @@ describe('Array library', function () {
     const arr = [1, 2, 46, 6, 9];
     const newArr = await arrayLibrary.callStatic.keepNElementsInArray(arr, 2);
     expect(newArr.toString()).to.equal(arr.slice(0, 2).toString());
-    await expect(arrayLibrary.keepNElementsInArray(arr, 20)).to.be.revertedWith("can't cut more then got");
+    await expect(arrayLibrary.keepNElementsInArray(arr, 20)).to.be.revertedWithCustomError(arrayLibrary, "InvalidArrayLength")
     // return the same array if the length is the same
     const sameArr = await arrayLibrary.callStatic.keepNElementsInArray(arr, arr.length);
     expect(sameArr.toString()).to.equal(arr.toString());
@@ -34,14 +34,14 @@ describe('Array library', function () {
     const arr = [addr0.address, addr1.address, addr2.address, addr4.address];
     const newArr = await arrayLibrary.callStatic.KeepNElementsInArray(arr, 2);
     expect(newArr.toString()).to.equal(arr.slice(0, 2).toString());
-    await expect(arrayLibrary.KeepNElementsInArray(arr, 20)).to.be.revertedWith("can't cut more then got");
+    await expect(arrayLibrary.KeepNElementsInArray(arr, 20)).to.be.revertedWithCustomError(arrayLibrary, "InvalidArrayLength");
     // return the same array if the length is the same
     const sameArr = await arrayLibrary.callStatic.KeepNElementsInArray(arr, arr.length);
     expect(sameArr.toString()).to.equal(arr.toString());
   });
 
   it('is Array Ordered', async () => {
-    await expect(arrayLibrary.isArrayOrdered([])).to.be.revertedWith('array should be greater than zero');
+    await expect(arrayLibrary.isArrayOrdered([])).to.be.revertedWithCustomError(arrayLibrary, "ZeroArrayLength");
     const orderedArr = [1, 2, 3, 4, 5];
     const nonOrderedArr = [5, 8, 3, 19];
     let status = await arrayLibrary.callStatic.isArrayOrdered(orderedArr);

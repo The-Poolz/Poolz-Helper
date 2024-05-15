@@ -9,16 +9,19 @@ contract ERC721Helper is FirewallConsumer {
     event TransferOut(address Token, uint256 TokenId, address To);
     event TransferIn(address Token, uint256 TokenId, address From);
 
+    error NoAllowance();
+
     modifier testNFTAllowance(
         address token,
         uint256 tokenId,
         address owner
     ) {
-        require(
-            IERC721(token).isApprovedForAll(owner, address(this)) ||
-                IERC721(token).getApproved(tokenId) == address(this),
-            "No Allowance"
-        );
+        if (
+            !IERC721(token).isApprovedForAll(owner, address(this)) &&
+            IERC721(token).getApproved(tokenId) != address(this)
+        ) {
+            revert NoAllowance();
+        }
         _;
     }
 
@@ -32,7 +35,7 @@ contract ERC721Helper is FirewallConsumer {
         address token,
         uint256 tokenId,
         address from
-    ) internal TestNFTAllowance(token, tokenId, from) {
+    ) internal testNFTAllowance(token, tokenId, from) {
         IERC721(token).transferFrom(from, address(this), tokenId);
         emit TransferOut(token, tokenId, from);
         assert(IERC721(token).ownerOf(tokenId) == address(this));

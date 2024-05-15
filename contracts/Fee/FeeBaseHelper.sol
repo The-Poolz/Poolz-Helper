@@ -30,16 +30,16 @@ abstract contract FeeBaseHelper is ERC20Helper, WhiteListHelper {
                 return 0;
             }
         }
-        _TakeFee(feeToPay);
+        _takeFee(feeToPay);
     }
 
-    function _TakeFee(uint _fee) private {
+    function _takeFee(uint _fee) private {
         address _feeToken = feeToken; // cache storage reads
         if (_feeToken == address(0)) {
             if (msg.value < _fee) revert NotEnoughFeeProvided();
             emit TransferInETH(msg.value, msg.sender);
         } else {
-            TransferInToken(_feeToken, msg.sender, _fee);
+            transferInToken(_feeToken, msg.sender, _fee);
         }
         feeReserve[_feeToken] += _fee;
     }
@@ -57,7 +57,7 @@ abstract contract FeeBaseHelper is ERC20Helper, WhiteListHelper {
             (bool success, ) = _to.call{value: amount}("");
             if (!success) revert TransferFailed();
         } else {
-            TransferToken(_token, _to, amount);
+            transferToken(_token, _to, amount);
         }
     }
 }

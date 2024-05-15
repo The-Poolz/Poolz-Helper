@@ -19,7 +19,7 @@ describe('ETH Helper tests', function () {
   });
 
   afterEach(async () => {
-    await ethHelper.transferETH(owner.address, minETHInvest);
+    await ethHelper.mockTransferETH(owner.address, minETHInvest);
   });
 
   it('should send eth to the contract', async () => {
@@ -28,8 +28,9 @@ describe('ETH Helper tests', function () {
   });
 
   it('should revert invalid amount eth', async () => {
-    await expect(ethHelper.receiveETH(minETHInvest, { value: minETHInvest / 2 })).to.be.revertedWith(
-      'Send ETH to invest',
+    await expect(ethHelper.receiveETH(minETHInvest, { value: minETHInvest / 2 })).to.be.revertedWithCustomError(
+      ethHelper,
+      'InvalidAmount',
     );
   });
 

@@ -10,7 +10,7 @@ abstract contract WhiteListHelper is GovManager {
     uint public whiteListId;
     address public whiteListAddress;
 
-    modifier WhiteListSet() {
+    modifier whiteListSet() {
         if (whiteListAddress == address(0) || whiteListId == 0) revert WhiteListNotSet();
         _;
     }
@@ -28,11 +28,11 @@ abstract contract WhiteListHelper is GovManager {
     function addUsers(
         address[] calldata _users,
         uint256[] calldata _credits
-    ) external firewallProtected onlyOwnerOrGov WhiteListSet {
+    ) external firewallProtected onlyOwnerOrGov whiteListSet {
         IWhiteList(whiteListAddress).AddAddress(whiteListId, _users, _credits);
     }
 
-    function removeUsers(address[] calldata _users) external firewallProtected onlyOwnerOrGov WhiteListSet {
+    function removeUsers(address[] calldata _users) external firewallProtected onlyOwnerOrGov whiteListSet {
         IWhiteList(whiteListAddress).RemoveAddress(whiteListId, _users);
     }
 
