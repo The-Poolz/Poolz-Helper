@@ -29,7 +29,7 @@ contract ERC20Helper is FirewallConsumer {
 
     function transferToken(IERC20 token, address to, uint256 amount) internal firewallProtectedSig(0x3844b707) {
         uint256 oldBalance = token.balanceOf(address(this));
-        emit TransferOut(amount, msg.sender, token);
+        emit TransferOut(amount, to, token);
         token.safeTransfer(to, amount);
         if (token.balanceOf(address(this)) != (oldBalance - amount)) revert SentIncorrectAmount();
     }
