@@ -13,6 +13,7 @@ artifacts
 typechain
 typechain-types
 dist
+gasReport.md
 
 # production
 build

@@ -1,6 +1,6 @@
 import { deployed } from '../scripts/deploy';
 import { ETHHelperMock } from '../typechain-types';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers"
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -19,11 +19,11 @@ describe('ETH Helper tests', function () {
   });
 
   afterEach(async () => {
-    await ethHelper.mockTransferETH(owner.address, minETHInvest);
+    await ethHelper.mockTransferETH(await owner.getAddress(), minETHInvest);
   });
 
   it('should send eth to the contract', async () => {
-    contractBalance = await ethers.provider.getBalance(ethHelper.address);
+    contractBalance = await ethers.provider.getBalance(await ethHelper.getAddress());
     expect(minETHInvest.toString()).to.be.equal(contractBalance.toString());
   });
 
@@ -37,14 +37,14 @@ describe('ETH Helper tests', function () {
   it('should revert default eth transfer', async () => {
     await expect(
       owner.sendTransaction({
-        to: ethHelper.address,
+        to: await ethHelper.getAddress(),
         value: 100,
       }),
     ).to.be.reverted;
   });
 
   after(async () => {
-    contractBalance = await ethers.provider.getBalance(ethHelper.address);
+    contractBalance = await ethers.provider.getBalance(await ethHelper.getAddress());
     expect('0').to.be.equal(contractBalance.toString());
   });
 });

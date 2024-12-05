@@ -1,6 +1,6 @@
 import { deployed } from '../scripts/deploy';
 import { ERC721HelperMock, ERC721Token } from '../typechain-types';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers"
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -19,10 +19,10 @@ describe('ERC721 Helper tests', function () {
   });
 
   beforeEach(async () => {
-    await erc721Token.awardItem(owner.address, itemId.toString());
-    const status = await erc721Token.isApprovedForAll(erc721Helper.address, user.address);
+    await erc721Token.awardItem(await owner.getAddress(), itemId.toString());
+    const status = await erc721Token.isApprovedForAll(await erc721Helper.getAddress(), await user.getAddress());
     if (!status) {
-      await erc721Token.setApprovalForAll(erc721Helper.address, true);
+      await erc721Token.setApprovalForAll(await erc721Helper.getAddress(), true);
     }
   });
 
@@ -31,33 +31,33 @@ describe('ERC721 Helper tests', function () {
   });
 
   it('should transfer tokens in contract', async () => {
-    await erc721Helper.mockTransferNFTIn(erc721Token.address, itemId, owner.address);
+    await erc721Helper.mockTransferNFTIn(await erc721Token.getAddress(), itemId, await owner.getAddress());
     const ownerOfNFT = await erc721Token.ownerOf(itemId);
-    expect(ownerOfNFT.toString()).to.be.equal(erc721Helper.address);
+    expect(ownerOfNFT.toString()).to.be.equal(await erc721Helper.getAddress());
   });
 
   it('should transfer NFT token after approve', async () => {
-    await erc721Token.setApprovalForAll(erc721Helper.address, false);
-    await erc721Token.approve(erc721Helper.address, itemId);
-    await erc721Helper.mockTransferNFTIn(erc721Token.address, itemId, owner.address);
+    await erc721Token.setApprovalForAll(await erc721Helper.getAddress(), false);
+    await erc721Token.approve(await erc721Helper.getAddress(), itemId);
+    await erc721Helper.mockTransferNFTIn(await erc721Token.getAddress(), itemId, await owner.getAddress());
     const ownerOfNFT = await erc721Token.ownerOf(itemId);
-    expect(ownerOfNFT.toString()).to.be.equal(erc721Helper.address);
+    expect(ownerOfNFT.toString()).to.be.equal(await erc721Helper.getAddress());
   });
 
   it('should TransferNFTOut tokens from contract', async () => {
-    await erc721Helper.mockTransferNFTOut(erc721Token.address, itemId - 1, owner.address);
+    await erc721Helper.mockTransferNFTOut(await erc721Token.getAddress(), itemId - 1, await owner.getAddress());
     const ownerOfNFT = await erc721Token.ownerOf(itemId);
-    expect(ownerOfNFT.toString()).to.be.equal(owner.address);
+    expect(ownerOfNFT.toString()).to.be.equal(await owner.getAddress());
   });
 
   it('should setApproveForAllNFT', async () => {
-    await erc721Helper.mockSetApproveForAllNFT(erc721Token.address, user.address, true);
-    const status = await erc721Token.isApprovedForAll(erc721Helper.address, user.address);
+    await erc721Helper.mockSetApproveForAllNFT(await erc721Token.getAddress(), await user.getAddress(), true);
+    const status = await erc721Token.isApprovedForAll(await erc721Helper.getAddress(), await user.getAddress());
     expect(status).to.be.equal(true);
   });
 
   it('should return no allowance message', async () => {
-    await expect(erc721Helper.mockTransferNFTIn(erc721Token.address, itemId, user.address)).to.be.revertedWithCustomError(
+    await expect(erc721Helper.mockTransferNFTIn(await erc721Token.getAddress(), itemId, await user.getAddress())).to.be.revertedWithCustomError(
       erc721Helper,
       'NoAllowance',
     );

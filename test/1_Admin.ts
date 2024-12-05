@@ -1,7 +1,7 @@
 import { ZERO_ADDRESS } from '../scripts/constants';
 import { deployed } from '../scripts/deploy';
 import { GovManager, ETHHelper, PozBenefit } from '../typechain-types';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers"
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
