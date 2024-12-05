@@ -1,6 +1,6 @@
 import { deployed } from '../scripts/deploy';
 import { ERC20Token, ERC721Token } from '../typechain-types';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers"
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
@@ -17,10 +17,10 @@ describe('Token Test', function () {
 
   it('mint ERC20 tokens', async () => {
     const oldBalance = await ERC20Token.balanceOf(owner.address);
-    const mintAmount = ethers.utils.parseUnits('500000', 18);
+    const mintAmount = ethers.parseUnits('500000', 18);
     await ERC20Token.FreeTest();
     const newBalance = await ERC20Token.balanceOf(owner.address);
-    expect(newBalance).to.be.equal(oldBalance.add(mintAmount));
+    expect(newBalance).to.be.equal(oldBalance + mintAmount);
   });
 
   it('mint ERC721 token', async () => {
@@ -29,6 +29,6 @@ describe('Token Test', function () {
     const nftURI = 'TEST 1';
     await NFT.awardItem(owner.address, nftURI);
     const newBalance = await NFT.balanceOf(owner.address);
-    expect(newBalance).to.be.equal(oldBalance.add(1));
+    expect(newBalance).to.be.equal(oldBalance + 1n);
   });
 });
