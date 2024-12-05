@@ -24,12 +24,14 @@ describe('Fee Helper Test', function () {
     const oldBal = await ethers.provider.getBalance(await payer.getAddress());
     const feePaid = await feeHelper.connect(payer).MethodWithFee.staticCall({ gasPrice: gasPrice });
     const tx = await feeHelper.connect(payer).MethodWithFee({ gasPrice: gasPrice });
-    const txReceipt = (await tx.wait()) as any;
+    const txReceipt = await tx.wait()
     const actualBal = await payer.provider.getBalance(await payer.getAddress());
-    const gasCost = ethers.toBigInt(txReceipt.gasUsed) * ethers.toBigInt(tx.gasPrice)
-    const expectedBal = oldBal - gasCost;
-    expect(actualBal).to.be.equal(expectedBal);
-    expect(feePaid).to.be.equal(0);
+    if (txReceipt) {
+      const gasCost = ethers.toBigInt(txReceipt.gasUsed) * ethers.toBigInt(tx.gasPrice)
+      const expectedBal = oldBal - gasCost;
+      expect(actualBal).to.be.equal(expectedBal);
+      expect(feePaid).to.be.equal(0);
+    }
   });
 
   describe('test ERC20 token', async () => {
