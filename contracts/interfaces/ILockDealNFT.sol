@@ -8,6 +8,8 @@ import "./IVaultManager.sol";
 interface ILockDealNFT is IERC721Enumerable {
     function approvedContracts(address contractAddress) external view returns (bool);
 
+    function approvedPoolUserTransfers(address user) external view returns (bool); 
+
     function mintAndTransfer(
         address owner,
         address token,
