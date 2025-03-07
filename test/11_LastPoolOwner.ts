@@ -12,11 +12,13 @@ describe('LastPoolOwner abstract contract', function () {
   });
 
   it('should support IBeforeTransfer interface', async () => {
-    expect(await lastPoolOwner.supportsInterface('0x1ffb811f')).to.be.true;
+    const IBeforeTransferInterfaceId = '0x1ffb811f';
+    expect(await lastPoolOwner.supportsInterface(IBeforeTransferInterfaceId)).to.be.true;
   });
 
   it('should support IERC165 interface', async () => {
-    expect(await lastPoolOwner.supportsInterface('0x01ffc9a7')).to.be.true;
+    const IERC165InterfaceId = '0x01ffc9a7';
+    expect(await lastPoolOwner.supportsInterface(IERC165InterfaceId)).to.be.true;
   });
 
   it('should return lastPoolOwner', async () => {
